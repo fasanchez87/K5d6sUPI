@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.DetalleEmpresa"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_above="@+id/rlDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/linearDetalleAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/rlDetalle"
+            android:orientation="vertical">
+
+            <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/appBarDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                    <ImageView
+                        android:id="@android:id/icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:focusable="false"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_logo_bar_kupi" />
+                </android.support.v7.widget.Toolbar>
+
+            </android.support.design.widget.AppBarLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:id="@+id/layoutMacroEspera">
+
+            <RelativeLayout
+                android:id="@+id/layoutEsperaVotosMisNominados"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+                <ProgressBar
+                    android:id="@+id/progressBarNotificacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminateTint="@color/colorPrimary"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/progressBarNotificacion"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="4dp"
+                    android:text="Cargando..."
+                    android:textSize="18sp"
+                    android:textColor="@color/colorEditTextGris"
+                    />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/llDetalle">
+
+
+        <ImageView
+            android:id="@+id/imagenEmpresaDetalleEmpresa"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+           />
+
+        <TextView
+            android:id="@+id/editTextNombreDetalleEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_below="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="3dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="6dp"
+            android:paddingTop="17dp"
+            android:textColor="@color/colorNegro"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/editTextDireccionDetalleEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:paddingLeft="25dp"
+            android:paddingRight="6dp"
+            android:gravity="left"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:textColor="#767676"
+            android:textSize="16sp"
+           />
+
+        <TextView
+            android:id="@+id/editTextDescripcionDetalleEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_below="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:paddingLeft="25dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:textColor="@color/colorNegro"
+            android:textSize="16sp"
+           />
+
+        <Button
+            android:id="@+id/botonComprarDetalleEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
+            android:textAllCaps="false"
+            android:background="@drawable/button"
+            android:text="Pagar"
+            android:textColor="@color/colorBlanco" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="7dp" />
+
+        <ImageView
+            android:id="@+id/imagenPromocionDetalleEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:visibility="visible"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorAzulDicmax"
+            android:orientation="horizontal"
+            android:layout_gravity="top">
+
+            <Button
+                android:id="@+id/botonLlegarDetalleEmpresa"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorAzulDicmax"
+                android:drawableTop="@drawable/selector_llegar"
+                android:paddingBottom="0dp"
+                android:paddingTop="4dp"
+                android:text="Llegar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlanco" />
+
+            <Button
+                android:id="@+id/botonLlamarDetalleEmpresa"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorAzulDicmax"
+                android:drawableTop="@drawable/selector_llamar"
+                android:paddingBottom="0dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="4dp"
+                android:text="Llamar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlanco" />
+
+            <Button
+                android:id="@+id/botonWebDetalleEmpresa"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorAzulDicmax"
+                android:drawableTop="@drawable/selector_web"
+                android:paddingBottom="0dp"
+                android:paddingTop="4dp"
+                android:text="Web"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlanco" />
+
+        </LinearLayout>
+
+</LinearLayout>
+
+
+
+    </LinearLayout>
+
+</ScrollView>

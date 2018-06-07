@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_inicio"
+        android:icon="@drawable/ic_home"
+        android:title="@string/item_1"/>
+    <item
+        android:id="@+id/action_datos"
+        android:icon="@drawable/ic_mis_datos"
+        android:title="@string/item_2"/>
+   <!-- <item
+        android:id="@+id/action_puntos_pago"
+        android:icon="@drawable/ic_puntos_pago"
+        android:title="@string/item_3"
+        android:visible="false"/>-->
+    <item
+        android:id="@+id/action_contacto"
+        android:icon="@drawable/ic_contacto"
+        android:title="@string/item_4"/>
+</menu>

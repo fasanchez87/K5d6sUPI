@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_llegar_empresa"
+        android:icon="@drawable/ic_puntos_pago"
+        android:title="llegar"
+        android:checked="true"/>
+    <item
+        android:id="@+id/action_llamar_empresa"
+        android:icon="@drawable/ic_llamar"
+        android:title="llamar"
+        android:checked="true"/>
+    <item
+        android:id="@+id/action_web_empresa"
+        android:icon="@drawable/ic_web"
+        android:title="web"/>
+
+</menu>

@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "214082104971",
+    "firebase_url": "https://dicmax-d7899.firebaseio.com",
+    "project_id": "dicmax-d7899",
+    "storage_bucket": "dicmax-d7899.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214082104971:android:8e2588bf2fd35937",
+        "android_client_info": {
+          "package_name": "com.ingeniapps.dicmax"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214082104971-ji8ru60o7sb71n73ls29gdet3ugp753e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ingeniapps.dicmax",
+            "certificate_hash": "8f4b98f07a5a0ebca46147a2ebe10d5f54bdac58"
+          }
+        },
+        {
+          "client_id": "214082104971-r4e8jbsmshlmodo0iqffb9lear67sn1t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7gE8Bpuyojqr8RcF-Z6rieNoYUIJp9eQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214082104971-5glktetekjlf2ieooh6ga8lokr44cujt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mobincube.estasi.scH79VXN",
+                "app_store_id": "1228370904"
+              }
+            },
+            {
+              "client_id": "214082104971-r4e8jbsmshlmodo0iqffb9lear67sn1t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

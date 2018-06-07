@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.Pago"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_above="@+id/rlDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLetraFondoEstrellado"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/linearDetalleAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/rlDetalle"
+            android:orientation="vertical">
+
+            <android.support.design.widget.AppBarLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/appBarDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                    <ImageView
+                        android:id="@android:id/icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:focusable="false"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_logo_bar_kupi" />
+
+                </android.support.v7.widget.Toolbar>
+
+            </android.support.design.widget.AppBarLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/llDetalle">
+
+            <TextView
+                android:id="@+id/xssdsad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="3dp"
+                android:text="Seleccionar forma de pago"
+                android:paddingTop="30dp"
+                android:textColor="@color/colorNegro"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/xssdsaeqwed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="3dp"
+                android:text="Valor Pago"
+                android:paddingTop="10dp"
+                android:textColor="@color/colorGrisTextCollpser"
+                android:textSize="19sp"
+                />
+
+            <TextView
+                android:id="@+id/editTextValorConfirmarPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/progressBar"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:paddingBottom="3dp"
+                android:textColor="@color/colorAzulDicmax"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinnerPlazoPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:enabled="true"
+                android:paddingTop="25dp"
+                android:shadowColor="@color/colorThemeBlanco"
+                android:textColor="@color/colorThemeBlanco"
+                android:textColorHighlight="@color/colorThemeBlanco"
+                android:textColorHint="@color/colorThemeBlanco"
+                android:textColorLink="@color/colorThemeBlanco"
+                android:theme="@style/EditTextFondoBlanco1" />
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinnerPeriodoPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:enabled="true"
+                android:paddingTop="25dp"
+                android:shadowColor="@color/colorThemeBlanco"
+                android:textColor="@color/colorThemeBlanco"
+                android:textColorHighlight="@color/colorThemeBlanco"
+                android:textColorHint="@color/colorThemeBlanco"
+                android:textColorLink="@color/colorThemeBlanco"
+                android:theme="@style/EditTextFondoBlanco1" />
+
+
+
+
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+
+
+            <Button
+                android:id="@+id/botonRealizarPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:textAllCaps="false"
+                android:background="@drawable/button_pago"
+                android:text="Realizar Pago"
+                android:visibility="visible"
+                android:textColor="@color/colorBlanco" />
+
+            <Button
+                android:id="@+id/botonRealizarDisable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:enabled="false"
+                android:visibility="gone"
+                android:textAllCaps="false"
+                android:background="@drawable/button_pago_disable"
+                android:text="Realizar Pago"
+                android:textColor="@color/colorBlanco" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
