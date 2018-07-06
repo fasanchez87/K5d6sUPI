@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -72,6 +73,8 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
     private Button botonWebDetalleEmpresa;
     private Button botonLlamarDetalleEmpresa;
     vars vars;
+    private Typeface copperplateGothicLight;
+
 
     private String datoLlegarEmpresa;
     private String datoLlamarEmpresa;
@@ -156,6 +159,8 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
         WebServiceGetEmpresas(idEmpresa);
 
         botonComprarDetalleEmpresa = (Button) findViewById(R.id.botonComprarDetalleEmpresa);
+        copperplateGothicLight = Typeface.createFromAsset(getAssets(), "fonts/AvenirLTStd-Light.ttf");
+        botonComprarDetalleEmpresa.setTypeface(copperplateGothicLight);
         botonComprarDetalleEmpresa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

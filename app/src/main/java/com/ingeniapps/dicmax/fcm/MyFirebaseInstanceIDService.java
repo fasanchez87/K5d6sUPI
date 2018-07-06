@@ -69,7 +69,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService
 
     private void guardarTokenFCMInstanceIDService(final String refreshedToken)
     {
-        String _urlWebServiceUpdateToken = var.ipServer.concat("/ws/updateToken");
+        String _urlWebServiceUpdateToken = var.ipServer.concat("/ws/updateTokenFCM");
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, _urlWebServiceUpdateToken, null,
                 new Response.Listener<JSONObject>()

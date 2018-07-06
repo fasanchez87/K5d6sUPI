@@ -97,12 +97,12 @@
                 android:paddingRight="7dp"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                android:background="#ebebeb">
+                android:background="#cecece">
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:hint="Buscar..."
+                    android:hint="¿Que buscas?"
                     android:paddingLeft="10dp"
                     android:background="@drawable/style_editext_cuadrangular"
                     android:theme="@style/EditTextFondoBlanco"
@@ -127,21 +127,32 @@
 
             </LinearLayout>
 
-
-            <TextView
+            <com.ingeniapps.dicmax.Text.FontStylerView
                 android:id="@+id/editTextNumEmpresas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:text="Deportes"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                app:fontName="AvenirLTStd-Light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+                app:layout_constraintVertical_bias="0.904"
                 android:layout_below="@+id/progressBar"
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
-                android:text="8 Empresas Aliadas"
-                android:textSize="15sp"
                 android:textColor="@color/colorBlanco"
-                android:background="@color/colorAzulDicmax"
-                />
+                android:background="@color/colorPrimary"/>
+
+
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_empresas"

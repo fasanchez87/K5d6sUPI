@@ -2,19 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_inicio"
-        android:icon="@drawable/ic_home"
-        android:title="@string/item_1"/>
+        android:icon="@drawable/ic_logo_icon"
+        android:title="Home"/>
     <item
-        android:id="@+id/action_datos"
-        android:icon="@drawable/ic_mis_datos"
-        android:title="@string/item_2"/>
-   <!-- <item
-        android:id="@+id/action_puntos_pago"
-        android:icon="@drawable/ic_puntos_pago"
-        android:title="@string/item_3"
-        android:visible="false"/>-->
+        android:id="@+id/action_comercios"
+        android:icon="@drawable/ic_comercios"
+        android:title="Convenios"/>
     <item
-        android:id="@+id/action_contacto"
-        android:icon="@drawable/ic_contacto"
-        android:title="@string/item_4"/>
+        android:id="@+id/action_pagos"
+        android:icon="@drawable/ic_calendar"
+        android:title="Pagos"/>
+    <item
+        android:id="@+id/action_historial"
+        android:icon="@drawable/ic_historial"
+        android:title="Historial"/>
+    <item
+        android:id="@+id/action_cuenta"
+        android:icon="@drawable/ic_user"
+        android:title="Cuenta"/>
 </menu>

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.bumptech.glide.Glide;
+import com.ingeniapps.dicmax.Text.FontStylerView;
 import com.ingeniapps.dicmax.beans.Categoria;
 import com.ingeniapps.dicmax.R;
 import com.ingeniapps.dicmax.beans.Empresa;
@@ -123,12 +124,12 @@ public class CategoriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public class CategoriaHolder extends RecyclerView.ViewHolder
     {
         //public NetworkImageView imagenPerfil;
-        public TextView textViewNombreCategoria;
+        public FontStylerView textViewNombreCategoria;
 
         public CategoriaHolder(View view)
         {
             super(view);
-            textViewNombreCategoria=(TextView) view.findViewById(R.id.textViewNombreCategoria);
+            textViewNombreCategoria=(FontStylerView) view.findViewById(R.id.textViewNombreCategoria);
         }
 
         void bindData(final Categoria categoria)

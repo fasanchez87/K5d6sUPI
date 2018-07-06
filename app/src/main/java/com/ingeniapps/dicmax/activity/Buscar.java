@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -75,8 +76,11 @@ public class Buscar extends AppCompatActivity
     private boolean solicitando=false;
     //VERSION DEL APP INSTALADA
     private String versionActualApp;
+    private Typeface copperplateGothicLight;
+
 
     private ProgressDialog progressDialog;
+
 
 
     CardView cardViewCategorias;
@@ -84,6 +88,7 @@ public class Buscar extends AppCompatActivity
     EditText editTextBusqueda;
     TextView editTextNumEmpresas;
     private String idCategoria;
+    private String nomCategoria;
 
     DividerItemDecoration mDividerItemDecoration;
 
@@ -122,8 +127,13 @@ public class Buscar extends AppCompatActivity
         context = this;
         pagina=0;
 
+        copperplateGothicLight = Typeface.createFromAsset(getAssets(), "fonts/AvenirLTStd-Light.ttf");
+
+
         editTextNumEmpresas=(TextView)findViewById(R.id.editTextNumEmpresas);
         editTextBusqueda=(EditText)findViewById(R.id.editTextBusqueda);
+        editTextBusqueda.setTypeface(copperplateGothicLight);
+
 
         not_found_empresas=(ImageView)findViewById(R.id.not_found_empresas);
         //not_found_noticias.setVisibility(View.VISIBLE);
@@ -194,10 +204,12 @@ public class Buscar extends AppCompatActivity
             if (extras == null)
             {
                 idCategoria = null;
+                nomCategoria = null;
             }
             else
             {
                 idCategoria = extras.getString("idCategoria");
+                nomCategoria = extras.getString("nomCategoria");
             }
         }
 
@@ -249,7 +261,7 @@ public class Buscar extends AppCompatActivity
                                     empresa.setDirEmpresa(jsonObject.getString("direccion"));
                                     empresa.setDescEmpresa(jsonObject.getString("descripcion"));
                                     empresa.setType(jsonObject.getString("type"));
-                                    editTextNumEmpresas.setText(listaEmpresas.length()+" Empresas Aliadas");
+                                    editTextNumEmpresas.setText(TextUtils.isEmpty(nomCategoria)?listaEmpresas.length()+" Convenios":listaEmpresas.length()+" Convenios en "+nomCategoria);
                                     listadoEmpresas.add(empresa);
                                 }
 
@@ -258,7 +270,6 @@ public class Buscar extends AppCompatActivity
                                     if (progressDialog.isShowing())
                                     {
                                         progressDialog.dismiss();
-
                                     }
                                 }
                             }

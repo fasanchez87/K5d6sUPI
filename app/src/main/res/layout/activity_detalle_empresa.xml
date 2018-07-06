@@ -107,53 +107,238 @@
             android:scaleType="fitCenter"
            />
 
-        <TextView
+
+        <com.ingeniapps.dicmax.Text.FontStylerView
             android:id="@+id/editTextNombreDetalleEmpresa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="3dp"
+            android:text="Deportes"
+            android:textColor="@color/colorAzulDicmax"
+            app:fontName="AvenirLTStd-Light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+            app:layout_constraintVertical_bias="0.904"
             android:gravity="left"
             android:layout_below="@+id/progressBar"
             android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
-            android:paddingBottom="3dp"
-            android:paddingLeft="25dp"
+            android:paddingBottom="0dp"
+            android:paddingLeft="20dp"
             android:paddingRight="6dp"
             android:paddingTop="17dp"
-            android:textColor="@color/colorNegro"
-            android:textSize="19sp"
-            android:textStyle="bold" />
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/editTextDireccionDetalleEmpresa"
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/progressBar"
-            android:layout_centerInParent="true"
-            android:paddingLeft="25dp"
-            android:paddingRight="6dp"
-            android:gravity="left"
-            android:paddingBottom="3dp"
-            android:paddingTop="3dp"
-            android:textColor="#767676"
-            android:textSize="16sp"
-           />
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingLeft="20dp">
 
-        <TextView
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_world" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="9dp"
+                android:layout_height="wrap_content" />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/editTextDireccionDetalleEmpresa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:text="Carrera 45 45 45"
+                app:fontName="AvenirLTStd-Light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+                app:layout_constraintVertical_bias="0.904"
+                android:layout_below="@+id/progressBar"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="0dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorGrisTextCollpser"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp"
+            android:paddingLeft="20dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_phone" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="9dp"
+                android:layout_height="wrap_content" />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/editTextDireccionDetalleEmpresa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:text="2252525"
+                app:fontName="AvenirLTStd-Light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+                app:layout_constraintVertical_bias="0.904"
+                android:layout_below="@+id/progressBar"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="0dp"
+                android:paddingTop="1dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorGrisTextCollpser"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp"
+            android:paddingLeft="20dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_internet" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="9dp"
+                android:layout_height="wrap_content" />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/editTextDireccionDetalleEmpresa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:text="www.prueba.com"
+                app:fontName="AvenirLTStd-Light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+                app:layout_constraintVertical_bias="0.904"
+                android:layout_below="@+id/progressBar"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="0dp"
+                android:paddingTop="1dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorGrisTextCollpser"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingLeft="20dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_locations" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="9dp"
+                android:layout_height="wrap_content" />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/editTextDireccionDetalleEmpresa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:text="¿Cómo llegar aquí?"
+                app:fontName="AvenirLTStd-Light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+                app:layout_constraintVertical_bias="0.904"
+                android:layout_below="@+id/progressBar"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="0dp"
+                android:paddingTop="1dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorGrisTextCollpser"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <com.ingeniapps.dicmax.Text.FontStylerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="22dp"
+            android:paddingRight="22dp"
+            android:text="Naturalmente Sanodsdsdsdddddddddddddddddddddddddddddddddddddsdsdsdsddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            app:fontName="AvenirLTStd-Light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+            app:layout_constraintVertical_bias="0.904"
+            android:layout_below="@+id/progressBar"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
             android:id="@+id/editTextDescripcionDetalleEmpresa"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:gravity="left"
-            android:layout_below="@+id/progressBar"
             android:layout_centerInParent="true"
-            android:paddingLeft="25dp"
-            android:paddingRight="6dp"
-            android:paddingBottom="3dp"
-            android:paddingTop="3dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="5dp"
             android:textColor="@color/colorNegro"
-            android:textSize="16sp"
-           />
+            android:textSize="16sp"/>
 
         <Button
+            android:textSize="17sp"
+            android:background="@drawable/button_verde"
             android:id="@+id/botonComprarDetalleEmpresa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,9 +347,10 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"
             android:textAllCaps="false"
-            android:background="@drawable/button"
             android:text="Pagar"
-            android:textColor="@color/colorBlanco" />
+            android:visibility="gone"
+            android:textColor="@color/colorBlanco"/>
+
 
         <android.support.v4.widget.Space
             android:layout_width="match_parent"
@@ -177,7 +363,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="30dp"
-            android:visibility="visible"
+            android:visibility="gone"
             />
 
 
@@ -186,7 +372,8 @@
             android:layout_height="50dp"
             android:background="@color/colorAzulDicmax"
             android:orientation="horizontal"
-            android:layout_gravity="top">
+            android:layout_gravity="top"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/botonLlegarDetalleEmpresa"

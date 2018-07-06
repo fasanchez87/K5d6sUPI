@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -87,6 +88,8 @@ public class Categorias extends Fragment
     private boolean solicitando=false;
     //VERSION DEL APP INSTALADA
     private String versionActualApp;
+    private Typeface copperplateGothicLight;
+
 
     CardView cardViewCategorias;
     FloatingActionButton botonComprar;
@@ -129,6 +132,7 @@ public class Categorias extends Fragment
             {
                 Intent i=new Intent(Categorias.this.getActivity(),Buscar.class);
                 i.putExtra("idCategoria",categoria.getCodCategoria());
+                i.putExtra("nomCategoria",categoria.getNomCategoria());
                 startActivity(i);
             }
         });
@@ -161,7 +165,9 @@ public class Categorias extends Fragment
             }
         };*/
 
+        copperplateGothicLight = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AvenirLTStd-Light.ttf");
         editTextBuscarInicio=(EditText)getActivity().findViewById(R.id.editTextBuscarInicio);
+        editTextBuscarInicio.setTypeface(copperplateGothicLight);
         editTextBuscarInicio.setInputType(InputType.TYPE_NULL);
         editTextBuscarInicio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -294,7 +300,7 @@ public class Categorias extends Fragment
                                     JSONObject jsonObject = (JSONObject) listaCategorias.get(i);
                                     Categoria categoria = new Categoria();
                                     categoria.setType(jsonObject.getString("type"));//type==evento
-                                    categoria.setNomCategoria(jsonObject.getString("clave"));
+                                    categoria.setNomCategoria(jsonObject.getString("categoria"));
                                     categoria.setCodCategoria(jsonObject.getString("id"));
                                     listadoCategorias.add(categoria);
                                 }

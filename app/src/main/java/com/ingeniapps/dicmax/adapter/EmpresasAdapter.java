@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.bumptech.glide.Glide;
+import com.ingeniapps.dicmax.Text.FontStylerView;
 import com.ingeniapps.dicmax.activity.DetalleEmpresa;
 import com.ingeniapps.dicmax.beans.Categoria;
 import com.ingeniapps.dicmax.R;
@@ -126,16 +127,16 @@ public class EmpresasAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class EmpresasHolder extends RecyclerView.ViewHolder
     {
         public ImageView imagenEmpresa;
-        public TextView nomEmpresa;
-        public TextView dirEmpresa;
+        public FontStylerView nombreEmpresaRow;
+        public FontStylerView direccionEmpresaRow;
         public TextView descEmpresa;
 
         public EmpresasHolder(View view)
         {
             super(view);
             imagenEmpresa=(ImageView) view.findViewById(R.id.imagenEmpresa);
-            nomEmpresa=(TextView) view.findViewById(R.id.nombreEmpresa);
-            dirEmpresa=(TextView) view.findViewById(R.id.direccionEmpresa);
+            nombreEmpresaRow=(FontStylerView) view.findViewById(R.id.nombreEmpresaRow);
+            direccionEmpresaRow=(FontStylerView) view.findViewById(R.id.direccionEmpresaRow);
             descEmpresa=(TextView) view.findViewById(R.id.descEmpresa);
         }
 
@@ -153,8 +154,8 @@ public class EmpresasAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         thumbnail(0.5f).into(imagenEmpresa);
             }
 
-            nomEmpresa.setText(empresa.getNomEmpresa());
-            dirEmpresa.setText(empresa.getDirEmpresa());
+            nombreEmpresaRow.setText(empresa.getNomEmpresa());
+            direccionEmpresaRow.setText(empresa.getDirEmpresa());
             descEmpresa.setText(empresa.getDescEmpresa());
 
             itemView.setOnClickListener(new View.OnClickListener()

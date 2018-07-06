@@ -58,6 +58,7 @@ import com.ingeniapps.dicmax.fragment.Categorias;
 import com.ingeniapps.dicmax.fragment.Contacto;
 import com.ingeniapps.dicmax.fragment.Datos;
 import com.ingeniapps.dicmax.fragment.FragmentIntentIntegrator;
+import com.ingeniapps.dicmax.fragment.Home;
 import com.ingeniapps.dicmax.fragment.Puntos;
 import com.ingeniapps.dicmax.helper.BottomNavigationViewHelper;
 import com.ingeniapps.dicmax.qrscanner.MaterialBarcodeScanner;
@@ -127,12 +128,12 @@ public class Inicio extends AppCompatActivity
             }
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
 
 
-        toolbar.setNavigationIcon(R.drawable.ic_qr_code);
+    /*    toolbar.setNavigationIcon(R.drawable.ic_qr_code);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -140,7 +141,7 @@ public class Inicio extends AppCompatActivity
 
                 startScan();
             }
-        });
+        });*/
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
@@ -149,7 +150,7 @@ public class Inicio extends AppCompatActivity
 
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, new Categorias());
+        fragmentTransaction.replace(R.id.frame_layout, new Home());
         fragmentTransaction.commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener
@@ -164,19 +165,19 @@ public class Inicio extends AppCompatActivity
                         switch (item.getItemId())
                         {
                             case R.id.action_inicio:
-                                fragmentClass = Categorias.class;
+                                fragmentClass = Home.class;
                                 break;
-                            case R.id.action_datos:
-                                fragmentClass = Datos.class;
+                           case R.id.action_comercios:
+                                fragmentClass = Categorias.class;
                                 break;
                            /* case R.id.action_puntos_pago:
                                 fragmentClass = Puntos.class;
                                 break;*/
-                            case R.id.action_contacto:
+                            /*case R.id.action_contacto:
                                 fragmentClass = Contacto.class;
-                                break;
+                                break;*/
                             default:
-                                fragmentClass = Categorias.class;
+                                fragmentClass = Home.class;
                         }
 
                         try
@@ -217,7 +218,7 @@ public class Inicio extends AppCompatActivity
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Inicio.this,R.style.AlertDialogTheme));
             builder
-                    .setTitle("GOOGLE PLAY SERVICES")
+                    .setTitle("Google Play Services")
                     .setMessage("Se ha encontrado un error con los servicios de Google Play, actualizalo y vuelve a ingresar.")
                     .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener()
                     {
@@ -439,79 +440,6 @@ public class Inicio extends AppCompatActivity
         return true;
     }
 
-    public static int compareVersions(String version1, String version2)//COMPARAR VERSIONES
-    {
-        String[] levels1 = version1.split("\\.");
-        String[] levels2 = version2.split("\\.");
-
-        int length = Math.max(levels1.length, levels2.length);
-        for (int i = 0; i < length; i++){
-            Integer v1 = i < levels1.length ? Integer.parseInt(levels1[i]) : 0;
-            Integer v2 = i < levels2.length ? Integer.parseInt(levels2[i]) : 0;
-            int compare = v1.compareTo(v2);
-            if (compare != 0){
-                return compare;
-            }
-        }
-        return 0;
-    }
-
-   /* public class CheckUpdateAppPlayStore extends AsyncTask<String, Void, String>
-    {
-        protected String doInBackground(String... urls)
-        {
-            try
-            {
-                versionPlayStore=Jsoup.connect("https://play.google.com/store/apps/details?id=" + "com.ingeniapps.dicmax" + "&hl=es")
-                        .timeout(10000)
-                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-                        .referrer("http://www.google.com")
-                        .get()
-                        .select("div[itemprop=softwareVersion]")
-                        .first()
-                        .ownText();
-
-                return versionPlayStore;
-            }
-            catch (Exception e)
-            {
-                return "";
-            }
-        }
-
-        protected void onPostExecute(String string)
-        {
-            versionPlayStore = string;
-
-            if(!TextUtils.isEmpty(versionPlayStore)&&!TextUtils.equals(versionPlayStore,""))
-            {
-                if (compareVersions(currentVersion, versionPlayStore) == -1)
-                {
-                    if (!((Activity) context).isFinishing())
-                    {
-                        dialog = new Dialog(Inicio.this);
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setCancelable(true);
-                        dialog.setContentView(R.layout.custom_dialog);
-
-                        Button dialogButton = (Button) dialog.findViewById(R.id.btn_dialog);
-                        dialogButton.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View v)
-                            {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setData(Uri.parse("market://details?id=com.ingeniapps.dicmax"));
-                                startActivity(intent);
-                            }
-                        });
-
-                        dialog.show();
-                    }
-                }
-            }
-        }
-    }*/
 
     private void WebServiceGetDatosPago(final String codQr)
     {

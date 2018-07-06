@@ -69,6 +69,7 @@
                         android:backgroundTint="@color/colorBlanco"
                         android:hint="Usuario"
                         android:inputType="text"
+                        android:text="1116238393"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
                 </android.support.design.widget.TextInputLayout>
@@ -88,6 +89,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorBlanco"
                         android:hint="Contraseña"
+                        android:text="6157"
                         android:inputType="textPassword"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
@@ -100,7 +102,7 @@
                     android:layout_marginTop="20dp"
                     android:textAllCaps="false"
                     android:textSize="17sp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:background="@drawable/button_verde"
                     android:text="Ingresar"
                     android:textColor="@color/colorBlanco" />
@@ -111,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:textAllCaps="false"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:enabled="false"
                     android:textSize="17sp"
                     android:background="@drawable/button_verde_disable"
@@ -119,7 +121,7 @@
                     android:textColor="@color/colorBlanco" />
 
                 <com.ingeniapps.dicmax.Text.FontStylerView
-                    android:id="@+id/textViewPdalus1"
+                    android:id="@+id/textViewOlvidoClave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"

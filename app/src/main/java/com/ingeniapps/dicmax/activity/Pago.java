@@ -61,10 +61,7 @@ public class Pago extends AppCompatActivity
     private NumberFormat numberFormat;
     private ProgressDialog progressDialog;
 
-
-
-
-    String codEmpresa, nomEmpresa, refPago, valPago,numTransaccion;
+    String codEmpresa, nomEmpresa, refPago, valPago, numTransaccion;
     gestionSharedPreferences gestionSharedPreferences;
 
 
@@ -281,8 +278,9 @@ public class Pago extends AppCompatActivity
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int id)
                                                 {
+                                                    Pago.this.finish();
                                                 }
-                                            }).show();
+                                            }).setCancelable(false).show();
 
 
                                 }

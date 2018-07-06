@@ -3,17 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.ingeniapps.dicmax.fragment.Categorias"
-    android:background="@drawable/fondo_app">
-
+    tools:context="com.ingeniapps.dicmax.fragment.Categorias">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
-        >
+        android:focusableInTouchMode="true">
 
         <LinearLayout
             android:id="@+id/linearHabilitarCompras"
@@ -25,7 +22,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#20000000"
+                android:background="#cecece"
                 android:orientation="vertical"
                 android:paddingBottom="10dp"
                 android:paddingLeft="7dp"
@@ -38,7 +35,7 @@
                     android:layout_height="40dp"
                     android:background="@drawable/style_editext_cuadrangular"
                     android:focusable="false"
-                    android:hint="Buscar..."
+                    android:hint="¿Buscas algo?"
                     android:inputType="none"
                     android:paddingLeft="10dp"
                     android:textColor="@color/colorEditTextGris"
@@ -47,29 +44,13 @@
 
             </LinearLayout>
 
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/progressBar"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:paddingTop="4dp"
-                android:text="¿Qué quieres comprar hoy?"
-                android:textColor="@color/colorGrisTextCollpser"
-                android:textSize="38sp" />
-
-            <android.support.v4.widget.Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_categorias"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:background="@color/colorPrimary" />
 
 
         </LinearLayout>
@@ -110,7 +91,7 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center_horizontal"
                     android:paddingTop="4dp"
-                    android:text="Cargando..."
+                    android:text="Un momento..."
                     android:textSize="18sp"
                     />
 

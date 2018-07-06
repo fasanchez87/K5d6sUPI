@@ -7,7 +7,7 @@
     android:background="@drawable/gradient"
     android:fitsSystemWindows="true"
     tools:context=".activity.Login"
-    android:id="@+id/coordinatorLayoutLogin">
+    android:id="@+id/coordinatorLayoutRegistro">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -42,8 +42,8 @@
 
                 <ImageView
                     android:id="@+id/imgLogo"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
@@ -55,29 +55,32 @@
                     app:srcCompat="@drawable/ic_logo_kupi" />
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_usuario"
+                    android:id="@+id/input_layout_nombre_usuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlanco"
                     android:textColor="@color/colorBlanco"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="0dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textColorHint="@color/colorBlanco">
+
                     <EditText
-                        android:id="@+id/editTextUsuario"
+                        android:id="@+id/editTextNombreUsuario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:windowSoftInputMode="stateHidden"
                         android:backgroundTint="@color/colorBlanco"
-                        android:hint="Usuario"
+                        android:hint="Nombre"
+                        android:textAllCaps="true"
                         android:inputType="text"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
+
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_usuario"
+                    android:id="@+id/input_layout_ape_usuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlanco"
@@ -85,20 +88,22 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textColorHint="@color/colorBlanco">
+
                     <EditText
-                        android:id="@+id/editTextUsuario"
+                        android:id="@+id/editTextApellidoUsuario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:windowSoftInputMode="stateHidden"
                         android:backgroundTint="@color/colorBlanco"
-                        android:hint="Usuario"
+                        android:hint="Apellido"
                         android:inputType="text"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
+
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_clave"
+                    android:id="@+id/input_layout_tel_usuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlanco"
@@ -107,18 +112,18 @@
                     android:gravity="center"
                     android:textColorHint="@color/colorBlanco">
                     <EditText
-                        android:id="@+id/editTextClave"
+                        android:id="@+id/editTextTelUsuario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorBlanco"
-                        android:hint="Contraseña"
-                        android:inputType="textPassword"
+                        android:hint="Número Teléfonico"
+                        android:inputType="number"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_clave"
+                    android:id="@+id/input_layout_email_usuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlanco"
@@ -127,18 +132,18 @@
                     android:gravity="center"
                     android:textColorHint="@color/colorBlanco">
                     <EditText
-                        android:id="@+id/editTextClave"
+                        android:id="@+id/editTextEmailUsuario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorBlanco"
-                        android:hint="Contraseña"
-                        android:inputType="textPassword"
+                        android:hint="Correo Electrónico"
+                        android:inputType="textEmailAddress"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_clave"
+                    android:id="@+id/input_layout_cedula_usuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlanco"
@@ -147,18 +152,18 @@
                     android:gravity="center"
                     android:textColorHint="@color/colorBlanco">
                     <EditText
-                        android:id="@+id/editTextClave"
+                        android:id="@+id/editTextCedulaUsuario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorBlanco"
-                        android:hint="Contraseña"
-                        android:inputType="textPassword"
+                        android:hint="Número de Cédula"
+                        android:inputType="number"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_clave"
+                    android:id="@+id/input_layout_clave_usuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlanco"
@@ -171,7 +176,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorBlanco"
-                        android:hint="Contraseña"
+                        android:hint="Clave"
                         android:inputType="textPassword"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
@@ -215,9 +220,9 @@
                     android:layout_marginTop="20dp"
                     android:textAllCaps="false"
                     android:textSize="17sp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:background="@drawable/button_verde"
-                    android:text="Registro"
+                    android:text="Registrarme"
                     android:textColor="@color/colorBlanco" />
 
                 <Button
@@ -226,11 +231,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:textAllCaps="false"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:enabled="false"
                     android:textSize="17sp"
                     android:background="@drawable/button_verde_disable"
-                    android:text="Ingresar"
+                    android:text="Registrarme"
                     android:textColor="@color/colorBlanco" />
 
             </LinearLayout>
@@ -250,7 +255,7 @@
 
                 <com.ingeniapps.dicmax.loader.SpinKitView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/spin_kit_login"
+                    android:id="@+id/spin_kit_registro"
                     style="@style/SpinKitView.Wave"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
@@ -258,7 +263,7 @@
                     app:SpinKit_Color="@color/colorBlanco"
                     android:padding="10dp"
                     android:gravity="center"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     android:layout_alignParentBottom="true"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"

@@ -3,6 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingBottom="1dp"
     android:paddingLeft="7dp"
@@ -23,7 +24,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:paddingBottom="2dp"
-            android:paddingLeft="7dp"
+            android:paddingLeft="0dp"
             android:paddingRight="11dp"
             android:paddingTop="2dp">
 
@@ -41,6 +42,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:scaleType="fitCenter"
                     card_view:srcCompat="@drawable/ic_search" />
 
@@ -54,34 +56,48 @@
                 android:orientation="vertical"
                 android:paddingLeft="11dp">
 
-                <TextView
-                    android:id="@+id/nombreEmpresa"
+                <com.ingeniapps.dicmax.Text.FontStylerView
+                    android:id="@+id/nombreEmpresaRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="CENTROAGUAS SA ESP"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="Deportes"
+                    android:textStyle="bold"
                     android:textColor="@color/colorNegro"
-                    android:textStyle="bold" />
+                    android:textSize="15dp"
+                    app:fontName="AvenirLTStd-Light"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+                    app:layout_constraintVertical_bias="0.904" />
 
-
-                <TextView
-                    android:id="@+id/direccionEmpresa"
+                <com.ingeniapps.dicmax.Text.FontStylerView
+                    android:id="@+id/direccionEmpresaRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="top"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="1dp"
                     android:text="Carrera 46 30-71"
-                    android:visibility="visible" />
+                    android:textStyle="bold"
+                    android:textColor="@color/colorVerde"
+                    android:textSize="12dp"
+                    app:fontName="AvenirLTStd-Light"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+                    app:layout_constraintVertical_bias="0.904" />
 
                 <TextView
                     android:id="@+id/descEmpresa"
                     android:layout_width="match_parent"
                     android:layout_height="18dp"
-                    android:layout_weight="1"
-                    android:gravity="top"
                     android:maxLength="35"
                     android:text="Joyerias y kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
             </LinearLayout>
 
         </LinearLayout>
