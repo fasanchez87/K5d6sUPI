@@ -27,6 +27,8 @@ public class Prelogin extends AppCompatActivity
     private String tokenFCM;
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private gestionSharedPreferences gestionSharedPreferences;
+    private Boolean guardarSesion;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,6 +36,12 @@ public class Prelogin extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prelogin);
         gestionSharedPreferences=new gestionSharedPreferences(this);
+        //COMPROBAMOS LA SESION DEL USUARIO
+        guardarSesion=gestionSharedPreferences.getBoolean("GuardarSesion");
+        if (guardarSesion==true)
+        {
+            cargarActivityPrincipal();
+        }
 
         if(checkPlayServices())
         {
@@ -114,5 +122,12 @@ public class Prelogin extends AppCompatActivity
         }
 
         return true;
+    }
+
+    public void cargarActivityPrincipal()
+    {
+        Intent intent = new Intent(Prelogin.this, Inicio.class);
+        startActivity(intent);
+        Prelogin.this.finish();
     }
 }

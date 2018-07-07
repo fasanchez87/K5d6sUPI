@@ -228,6 +228,7 @@ public class Login extends AppCompatActivity
 
                             if(status)
                             {
+                                //OBTENEMOS DATOS DEL USUARIO PARA GUARDAR SU SESION
                                 gestionSharedPreferences.putBoolean("GuardarSesion", true);
                                 gestionSharedPreferences.putString("codUsuario",""+response.getJSONObject("usuario").getString("codUsuario"));
                                 gestionSharedPreferences.putString("nomUsuario",""+response.getJSONObject("usuario").getString("nomUsuario"));

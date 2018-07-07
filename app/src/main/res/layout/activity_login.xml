@@ -69,7 +69,6 @@
                         android:backgroundTint="@color/colorBlanco"
                         android:hint="Usuario"
                         android:inputType="text"
-                        android:text="1116238393"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
                 </android.support.design.widget.TextInputLayout>
@@ -89,7 +88,6 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorBlanco"
                         android:hint="Contraseña"
-                        android:text="6157"
                         android:inputType="textPassword"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
