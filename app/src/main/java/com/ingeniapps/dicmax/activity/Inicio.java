@@ -55,10 +55,13 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.ingeniapps.dicmax.R;
 import com.ingeniapps.dicmax.beans.Empresa;
 import com.ingeniapps.dicmax.fragment.Categorias;
+import com.ingeniapps.dicmax.fragment.Compromisos;
 import com.ingeniapps.dicmax.fragment.Contacto;
+import com.ingeniapps.dicmax.fragment.Cuenta;
 import com.ingeniapps.dicmax.fragment.Datos;
 import com.ingeniapps.dicmax.fragment.FragmentIntentIntegrator;
 import com.ingeniapps.dicmax.fragment.Home;
+import com.ingeniapps.dicmax.fragment.Pagos;
 import com.ingeniapps.dicmax.fragment.Puntos;
 import com.ingeniapps.dicmax.helper.BottomNavigationViewHelper;
 import com.ingeniapps.dicmax.qrscanner.MaterialBarcodeScanner;
@@ -93,6 +96,8 @@ public class Inicio extends AppCompatActivity
     private Barcode barcodeResult;
     private ProgressDialog progressDialog;
     gestionSharedPreferences gestionSharedPreferences;
+    private Boolean guardarSesion;
+
 
 
     @Override
@@ -103,6 +108,8 @@ public class Inicio extends AppCompatActivity
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         gestionSharedPreferences=new gestionSharedPreferences(this);
+        guardarSesion=gestionSharedPreferences.getBoolean("GuardarSesion");
+
 
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -170,12 +177,36 @@ public class Inicio extends AppCompatActivity
                            case R.id.action_comercios:
                                 fragmentClass = Categorias.class;
                                 break;
-                           /* case R.id.action_puntos_pago:
-                                fragmentClass = Puntos.class;
-                                break;*/
-                            /*case R.id.action_contacto:
-                                fragmentClass = Contacto.class;
-                                break;*/
+                            case R.id.action_pagos:
+                                if (guardarSesion==false)
+                                {
+                                    cargarLogin();
+                                }
+                                else
+                                {
+                                    fragmentClass = Compromisos.class;
+                                    break;
+                                }
+                            case R.id.action_historial:
+                                if (guardarSesion==false)
+                                {
+                                    cargarLogin();
+                                }
+                                else
+                                {
+                                    fragmentClass = Pagos.class;
+                                    break;
+                                }
+                            case R.id.action_cuenta:
+                                if (guardarSesion==false)
+                                {
+                                    cargarLogin();
+                                }
+                                else
+                                {
+                                    fragmentClass = Cuenta.class;
+                                    break;
+                                }
                             default:
                                 fragmentClass = Home.class;
                         }
@@ -286,6 +317,13 @@ public class Inicio extends AppCompatActivity
         };
         ControllerSingleton.getInstance().addToReqQueue(jsonObjReq, "tokenFCM");
         jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(20000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    public void cargarLogin()
+    {
+        Intent intent = new Intent(Inicio.this, Login.class);
+        startActivity(intent);
+        Inicio.this.finish();
     }
 
     @Override

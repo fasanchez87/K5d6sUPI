@@ -104,8 +104,16 @@
             android:name=".activity.Registro"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:screenOrientation="portrait" android:name=".activity.ValidarUsuario" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:screenOrientation="portrait" android:name=".activity.ObtenerClave" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activity.ValidarUsuario"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ObtenerClave"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.CambioClave"  android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

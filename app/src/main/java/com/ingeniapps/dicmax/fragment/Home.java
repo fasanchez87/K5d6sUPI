@@ -84,6 +84,8 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
     public static final String BARCODE_KEY = "BARCODE";
 
     private ProgressDialog progressDialog;
+    private Boolean guardarSesion;
+
 
 
 
@@ -102,6 +104,8 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
         vars=new vars();
         context = getActivity();
         sharedPreferences=new gestionSharedPreferences(Home.this.getActivity());
+        guardarSesion=sharedPreferences.getBoolean("GuardarSesion");
+
     }
 
     @Override
@@ -135,11 +139,16 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
         {
             public void onClick(View v)
             {
-                startScan();
+                if (guardarSesion==false)
+                {
+                    cargarLogin();
+                }
+                else
+                {
+                    startScan();
+                }
             }
         });
-
-
 
         HashMap<String,String> url_maps = new HashMap<String, String>();
 
@@ -154,25 +163,39 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != MaterialBarcodeScanner.RC_HANDLE_CAMERA_PERM) {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            return;
-        }
-        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            startScan();
-            return;
-        }
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+
+
+            if (requestCode != MaterialBarcodeScanner.RC_HANDLE_CAMERA_PERM)
+            {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                return;
             }
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Home.this.getActivity(), R.style.AlertDialogTheme));
-        builder.setTitle("Permiso Cámara")
-                .setMessage(R.string.no_camera_permission)
-                .setPositiveButton(android.R.string.ok, listener)
-                .show();
+            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                startScan();
+                return;
+            }
+            DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Home.this.getActivity(), R.style.AlertDialogTheme));
+            builder.setTitle("Permiso Cámara")
+                    .setMessage(R.string.no_camera_permission)
+                    .setPositiveButton(android.R.string.ok, listener)
+                    .show();
+
+
+    }
+
+    public void cargarLogin()
+    {
+        Intent intent = new Intent(Home.this.getActivity(), Login.class);
+        startActivity(intent);
+        Home.this.getActivity().finish();
     }
 
 

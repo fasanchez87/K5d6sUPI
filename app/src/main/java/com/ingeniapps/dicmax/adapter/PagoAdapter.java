@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.ingeniapps.dicmax.R;
 import com.ingeniapps.dicmax.Text.FontStylerView;
 import com.ingeniapps.dicmax.beans.Compromiso;
+import com.ingeniapps.dicmax.beans.Pago;
 import com.ingeniapps.dicmax.sharedPreferences.gestionSharedPreferences;
 import com.ingeniapps.dicmax.vars.vars;
 import com.ingeniapps.dicmax.volley.ControllerSingleton;
@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class CompromisoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class PagoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private Activity activity;
     private LayoutInflater inflater;
-    private List<Compromiso> listadoCompromisos;
+    private List<Pago> listadoPagos;
 
-    public final int TYPE_COMPROMISO=0;
+    public final int TYPE_PAGO=0;
     public final int TYPE_LOAD=1;
     private gestionSharedPreferences sharedPreferences;
     private Context context;
@@ -41,15 +41,15 @@ public class CompromisoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public interface OnItemClickListener
     {
-        void onItemClick(Compromiso compromiso);
+        void onItemClick(Pago pagos);
     }
 
-    private final CompromisoAdapter.OnItemClickListener listener;
+    private final PagoAdapter.OnItemClickListener listener;
 
-    public CompromisoAdapter(Activity activity, ArrayList<Compromiso> listadoCompromisos, CompromisoAdapter.OnItemClickListener listener)
+    public PagoAdapter(Activity activity, ArrayList<Pago> listadoPagos, PagoAdapter.OnItemClickListener listener)
     {
         this.activity=activity;
-        this.listadoCompromisos=listadoCompromisos;
+        this.listadoPagos=listadoPagos;
         vars=new vars();
         sharedPreferences=new gestionSharedPreferences(this.activity);
         this.listener=listener;
@@ -59,13 +59,13 @@ public class CompromisoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if(viewType==TYPE_COMPROMISO)
+        if(viewType==TYPE_PAGO)
         {
-            return new CompromisoHolder(inflater.inflate(R.layout.compromisos_layout_row,parent,false));
+            return new PagoHolder(inflater.inflate(R.layout.pagos_layout_row,parent,false));
         }
         else
         {
-            return new LoadHolder(inflater.inflate(R.layout.compromisos_layout_row,parent,false));
+            return new PagoHolder(inflater.inflate(R.layout.pagos_layout_row,parent,false));
         }
     }
 
@@ -78,9 +78,9 @@ public class CompromisoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             loadMoreListener.onLoadMore();
         }
 
-        if(getItemViewType(position)==TYPE_COMPROMISO)
+        if(getItemViewType(position)==TYPE_PAGO)
         {
-            ((CompromisoHolder)holder).bindData(listadoCompromisos.get(position));
+            ((PagoHolder)holder).bindData(listadoPagos.get(position));
         }
 
       /*  if(position>previousPosition)
@@ -99,9 +99,9 @@ public class CompromisoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public int getItemViewType(int position)
     {
 
-        if(listadoCompromisos.get(position).getType().equals("compromiso"))
+        if(listadoPagos.get(position).getType().equals("pago"))
         {
-            return TYPE_COMPROMISO;
+            return TYPE_PAGO;
         }
         else
         {
@@ -112,49 +112,66 @@ public class CompromisoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemCount()
     {
-        return listadoCompromisos.size();
+        return listadoPagos.size();
     }
 
-    public class CompromisoHolder extends RecyclerView.ViewHolder
+    public class PagoHolder extends RecyclerView.ViewHolder
     {
-        public FontStylerView fecCompro;
-        public FontStylerView valPendiente;
-        public FontStylerView numDiasVerde;
-        public FontStylerView numDiasRojo;
+        public FontStylerView tipoTransa;
+        public FontStylerView nomEmpresa;
+        public FontStylerView fecCompra;
+        public FontStylerView valorPago;
+
+        public FontStylerView estPagoRealizado;
+        public FontStylerView estPagoPendiente;
         private NumberFormat numberFormat=NumberFormat.getNumberInstance(Locale.GERMAN);
 
 
-        public CompromisoHolder(View view)
+        public PagoHolder(View view)
         {
             super(view);
-            fecCompro=(FontStylerView) view.findViewById(R.id.fecCompro);
-            valPendiente=(FontStylerView) view.findViewById(R.id.valPendiente);
+            tipoTransa=(FontStylerView) view.findViewById(R.id.tipoTransa);
+            nomEmpresa=(FontStylerView) view.findViewById(R.id.nomEmpresa);
+            fecCompra=(FontStylerView) view.findViewById(R.id.fecCompra);
+            valorPago=(FontStylerView) view.findViewById(R.id.valorPago);
 
-            numDiasVerde=(FontStylerView) view.findViewById(R.id.numDiasVerde);
-            numDiasRojo=(FontStylerView) view.findViewById(R.id.numDiasRojo);
-
+            estPagoRealizado=(FontStylerView) view.findViewById(R.id.estPagoRealizado);
+            estPagoPendiente=(FontStylerView) view.findViewById(R.id.estPagoPendiente);
         }
 
-        void bindData(final Compromiso compromiso)
+        void bindData(final Pago pagos)
         {
-            fecCompro.setText(compromiso.getFecCompro());
-            valPendiente.setText("$"+numberFormat.format(Double.parseDouble(compromiso.getValPendiente())));
-            if(TextUtils.equals(String.valueOf(compromiso.getNumDias().charAt(0)),"-"))//SI ES NEGATIVO EL COMPROMISO
+            tipoTransa.setText(pagos.getTipTransaccion());
+            nomEmpresa.setText(pagos.getNomEmpresa());
+
+
+            if(TextUtils.equals(String.valueOf(pagos.getFecAprobacion().charAt(0)),"0"))//FECHA NULA POR ESTA PENDIENTE
             {
-                numDiasVerde.setVisibility(View.GONE);
-                numDiasRojo.setVisibility(View.VISIBLE);
-                numDiasRojo.setText(compromiso.getNumDias());
+                fecCompra.setText("Pendiente de aprobación");
             }
-            else//SI EL COMPROMISO ES POSITIVO
+            else
             {
-                numDiasVerde.setText(compromiso.getNumDias());
+                fecCompra.setText(pagos.getFecAprobacion());
+            }
+
+            valorPago.setText("$"+numberFormat.format(Double.parseDouble(pagos.getValTransaccion())));
+
+            if(TextUtils.equals(String.valueOf(pagos.getNomEstado()),"Pendiente"))
+            {
+                estPagoRealizado.setVisibility(View.GONE);
+                estPagoPendiente.setVisibility(View.VISIBLE);
+                estPagoPendiente.setText(pagos.getNomEstado());
+            }
+            else
+            {
+                estPagoRealizado.setText(pagos.getNomEstado());
             }
 
             itemView.setOnClickListener(new View.OnClickListener()
             {
                 @Override public void onClick(View v)
                 {
-                    listener.onItemClick(compromiso);
+                    listener.onItemClick(pagos);
                 }
             });
         }
@@ -191,9 +208,9 @@ public class CompromisoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.loadMoreListener = loadMoreListener;
     }
 
-    public List<Compromiso> getCompromisosList()
+    public List<Pago> getPagosList()
     {
-        return listadoCompromisos;
+        return listadoPagos;
     }
 
 }

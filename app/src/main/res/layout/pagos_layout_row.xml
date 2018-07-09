@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:paddingRight="7dp"
+            android:layout_weight="3">
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/tipoTransass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transacción"
+                android:paddingTop="5dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorNegro"
+                android:textSize="16dp"
+                app:fontName="AvenirLTStd-Black"
+                />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/tipoTransa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transacción"
+                android:textColor="@color/colorNegro"
+                android:textSize="14dp"
+                app:fontName="AvenirLTStd-Light"
+                />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/tipoComesass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Convenio"
+                android:paddingTop="1dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorNegro"
+                android:textSize="16dp"
+                app:fontName="AvenirLTStd-Black"
+                />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/nomEmpresa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Roger's"
+                android:textColor="@color/colorNegro"
+                android:textSize="14dp"
+                app:fontName="AvenirLTStd-Light"
+                />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/FechaComesass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha de Compra"
+                android:paddingTop="3dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorNegro"
+                android:textSize="16dp"
+                app:fontName="AvenirLTStd-Black"
+                />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/fecCompra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2018-09-09 18:09"
+                android:textColor="@color/colorNegro"
+                android:textSize="14dp"
+                app:fontName="AvenirLTStd-Light"
+                />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/ValComesass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valor Compra"
+                android:paddingTop="3dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorNegro"
+                android:textSize="16dp"
+                app:fontName="AvenirLTStd-Black"
+                />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/valorPago"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30,000"
+                android:paddingBottom="3dp"
+                android:textColor="@color/colorVerde"
+                android:textSize="14dp"
+                app:fontName="AvenirLTStd-Black"
+                />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/EstadoComesass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estado Compra"
+                android:paddingBottom="3dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorNegro"
+                android:textSize="16dp"
+                app:fontName="AvenirLTStd-Black"
+                />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Aprobado"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:background="@drawable/rounded_textview_pago_realizado"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:id="@+id/estPagoRealizado"
+                app:fontName="AvenirLTStd-Light"
+                android:visibility="visible"/>
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Aprobado"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:background="@drawable/rounded_textview_pago_pendiente"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:id="@+id/estPagoPendiente"
+                app:fontName="AvenirLTStd-Light"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
+

@@ -13,14 +13,14 @@
         android:focusableInTouchMode="true">
 
         <LinearLayout
-            android:id="@+id/linearHabilitarCompromisos"
+            android:id="@+id/linearHabilitarPagos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="gone">
 
                 <com.ingeniapps.dicmax.Text.FontStylerView
-                    android:id="@+id/editTextNumPagosPendientes"
+                    android:id="@+id/editTextNumPagosRealizados"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -44,7 +44,7 @@
 
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_compromisos"
+                android:id="@+id/recycler_view_pagos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -54,8 +54,9 @@
 
         </LinearLayout>
 
+
         <LinearLayout
-            android:id="@+id/linearSinCompromisos"
+            android:id="@+id/linearSinHistorial"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -66,17 +67,15 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
-                android:src="@drawable/sin_pagos"/>
+                android:src="@drawable/sin_historial"/>
 
         </LinearLayout>
-
-
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
-            android:id="@+id/layoutMacroEsperaCompromisos">
+            android:id="@+id/layoutMacroEsperaPagos">
 
             <ImageView
                 android:id="@+id/not_found_categorias"
