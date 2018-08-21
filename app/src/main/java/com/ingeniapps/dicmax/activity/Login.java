@@ -79,6 +79,7 @@ public class Login extends AppCompatActivity
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private Context context;
     private String usuario, clave;
+    private String tipoIngreso;
 
 
     @Override
@@ -86,6 +87,23 @@ public class Login extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (savedInstanceState == null)
+        {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null)
+            {
+                tipoIngreso=null;
+            }
+
+            else
+            {
+                tipoIngreso=extras.getString("tipoIngreso");
+            }
+        }
+
+        Log.i("tipoIngreso","invitado");
+
 
         //Estilo tipo letra boton.
         buttonIngresar=(Button)findViewById(R.id.buttonIngresar);
@@ -163,6 +181,7 @@ public class Login extends AppCompatActivity
             {
                 usuario=editTextUsuario.getText().toString();
                 clave=editTextClave.getText().toString();
+                gestionSharedPreferences.clear();
                 WebServiceLogin(usuario,clave);
             }
         });
@@ -173,9 +192,9 @@ public class Login extends AppCompatActivity
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
-           Intent i=new Intent(Login.this, Prelogin.class);
-           startActivity(i);
-           finish();
+                Intent i=new Intent(Login.this, Prelogin.class);
+                startActivity(i);
+                finish();
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -214,6 +233,8 @@ public class Login extends AppCompatActivity
         linearLoading.setVisibility(View.VISIBLE);
         editTextUsuario.setEnabled(false);
         editTextClave.setEnabled(false);
+        textViewOlvidoClave.setEnabled(false);
+
 
         JsonObjectRequest jsonObjReq=new JsonObjectRequest(Request.Method.GET, _urlWebService, null,
                 new Response.Listener<JSONObject>()
@@ -231,6 +252,10 @@ public class Login extends AppCompatActivity
                                 //OBTENEMOS DATOS DEL USUARIO PARA GUARDAR SU SESION
                                 gestionSharedPreferences.putBoolean("GuardarSesion", true);
                                 gestionSharedPreferences.putString("codUsuario",""+response.getJSONObject("usuario").getString("codUsuario"));
+
+                                gestionSharedPreferences.putString("codCiudad",""+response.getJSONObject("usuario").getString("codCiudad"));//CIUDAD INICIAL DEL USUARIO
+                                gestionSharedPreferences.putString("nomCiudad",""+response.getJSONObject("usuario").getString("nomCiudad"));//CIUDAD INICIAL DEL USUARIO
+
                                 gestionSharedPreferences.putString("nomUsuario",""+response.getJSONObject("usuario").getString("nomUsuario"));
                                 gestionSharedPreferences.putString("apeUsuario",""+response.getJSONObject("usuario").getString("apeUsuario"));
                                 gestionSharedPreferences.putString("numDocumento",""+response.getJSONObject("usuario").getString("numDocumento"));
@@ -241,6 +266,7 @@ public class Login extends AppCompatActivity
                                 if (!((Activity) context).isFinishing())
                                 {
                                     Intent intent=new Intent(Login.this,Inicio.class);
+                                    intent.putExtra("codCiudad",response.getJSONObject("usuario").getString("codCiudad"));
                                     startActivity(intent);
                                     finish();
                                     return;
@@ -256,6 +282,7 @@ public class Login extends AppCompatActivity
                                     linearLoading.setVisibility(View.INVISIBLE);
                                     editTextUsuario.setEnabled(true);
                                     editTextClave.setEnabled(true);
+                                    textViewOlvidoClave.setEnabled(true);
                                 }
                             }
                         }

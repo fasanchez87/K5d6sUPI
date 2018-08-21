@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -49,6 +51,7 @@ public class ValidarUsuario extends AppCompatActivity
 {
     EditText edit_text_validar_cedula;
     Button buttonSiguienteValidarCedulaEnable,buttonSiguienteValidarCedulaDisable;
+    private TextInputLayout input_layout_cedula_usuario;
     private String emailUsuario;
     public vars vars;
     AlertasErrores alertarErrores;
@@ -56,6 +59,8 @@ public class ValidarUsuario extends AppCompatActivity
     LinearLayout linearLoading;
     Context context;
     CoordinatorLayout coordinatorValidarUsuario;
+    private Typeface copperplateGothicLight;
+
 
 
     private ProgressDialog progressDialog;
@@ -67,10 +72,15 @@ public class ValidarUsuario extends AppCompatActivity
         setContentView(R.layout.activity_validar_usuario);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         context=this;
+        copperplateGothicLight = Typeface.createFromAsset(ValidarUsuario.this.getAssets(), "fonts/AvenirLTStd-Light.ttf");
+
 
         vars=new vars();
 
         coordinatorValidarUsuario=(CoordinatorLayout)findViewById(R.id.coordinatorValidarUsuario);
+        input_layout_cedula_usuario=(TextInputLayout) findViewById(R.id.input_layout_cedula_usuario);
+        input_layout_cedula_usuario.setTypeface(copperplateGothicLight);
+
 
 
         linearLoading=(LinearLayout) findViewById(R.id.linearLoadingValidarUsuario);
@@ -82,8 +92,15 @@ public class ValidarUsuario extends AppCompatActivity
 
         edit_text_validar_cedula=(EditText)findViewById(R.id.edit_text_validar_cedula);
         edit_text_validar_cedula.addTextChangedListener(new ValidarUsuario.GenericTextWatcher(edit_text_validar_cedula));
+        edit_text_validar_cedula.setTypeface(copperplateGothicLight);
+
         buttonSiguienteValidarCedulaEnable=(Button)findViewById(R.id.buttonSiguienteValidarCedulaEnable);
         buttonSiguienteValidarCedulaDisable=(Button)findViewById(R.id.buttonSiguienteValidarCedulaDisable);
+
+        buttonSiguienteValidarCedulaEnable.setTypeface(copperplateGothicLight);
+        buttonSiguienteValidarCedulaDisable.setTypeface(copperplateGothicLight);
+
+
         buttonSiguienteValidarCedulaEnable.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -111,7 +128,7 @@ public class ValidarUsuario extends AppCompatActivity
         linearLoading.setVisibility(View.VISIBLE);
         edit_text_validar_cedula.setEnabled(false);
 
-        JsonObjectRequest jsonObjReq=new JsonObjectRequest(Request.Method.GET, _urlWebService, null,
+        JsonObjectRequest jsonObjReq=new JsonObjectRequest(Request.Method.POST, _urlWebService, null,
                 new Response.Listener<JSONObject>()
                 {
                     @Override

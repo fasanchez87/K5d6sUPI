@@ -1,6 +1,7 @@
 package com.ingeniapps.dicmax.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -12,6 +13,8 @@ import com.ingeniapps.dicmax.R;
 public class ObtenerClave extends AppCompatActivity {
 
    Button buttonRegresarOlvidoClave;
+    private Typeface copperplateGothicLight;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -19,7 +22,12 @@ public class ObtenerClave extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_obtener_clave);
 
+        copperplateGothicLight = Typeface.createFromAsset(ObtenerClave.this.getAssets(), "fonts/AvenirLTStd-Light.ttf");
+
+
         buttonRegresarOlvidoClave=findViewById(R.id.buttonRegresarOlvidoClave);
+        buttonRegresarOlvidoClave.setTypeface(copperplateGothicLight);
+
         buttonRegresarOlvidoClave.setOnClickListener(new View.OnClickListener()
         {
             @Override

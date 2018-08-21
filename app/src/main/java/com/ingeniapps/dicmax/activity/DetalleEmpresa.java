@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -18,9 +19,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -68,6 +75,8 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
     private TextView editTextNombreDetalleEmpresa;
     private TextView editTextDireccionDetalleEmpresa;
     private TextView editTextDescripcionDetalleEmpresa;
+    private TextView editTextTelefonoEmpresaDetalle;
+    private TextView editTextWebEmpresa;
     private Button botonComprarDetalleEmpresa;
     private Button botonLlegarDetalleEmpresa;
     private Button botonWebDetalleEmpresa;
@@ -75,11 +84,29 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
     vars vars;
     private Typeface copperplateGothicLight;
 
+    private MenuItem menuItem;
+    Spanned Text;
+
+
+
 
     private String datoLlegarEmpresa;
     private String datoLlamarEmpresa;
     private String datoWebEmpresa;
     private String latitudEmpresa;
+    private String nomEmpresa;
+
+
+
+    private String urlWebEmpresa;
+
+
+
+    private String imaEmpresa;
+
+
+
+    private String dirEmpresa;
 
 
     private String descripcionEmpresa;
@@ -105,7 +132,8 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_empresa);
 
@@ -150,6 +178,8 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
         editTextNombreDetalleEmpresa = (TextView) findViewById(R.id.editTextNombreDetalleEmpresa);
         editTextDireccionDetalleEmpresa = (TextView) findViewById(R.id.editTextDireccionDetalleEmpresa);
         editTextDescripcionDetalleEmpresa = (TextView) findViewById(R.id.editTextDescripcionDetalleEmpresa);
+        editTextTelefonoEmpresaDetalle = (TextView) findViewById(R.id.editTextTelefonoEmpresaDetalle);
+        editTextWebEmpresa = (TextView) findViewById(R.id.editTextWebEmpresa);
 
         botonComprarDetalleEmpresa = (Button) findViewById(R.id.botonComprarDetalleEmpresa);
         botonLlegarDetalleEmpresa = (Button) findViewById(R.id.botonLlegarDetalleEmpresa);
@@ -161,6 +191,17 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
         botonComprarDetalleEmpresa = (Button) findViewById(R.id.botonComprarDetalleEmpresa);
         copperplateGothicLight = Typeface.createFromAsset(getAssets(), "fonts/AvenirLTStd-Light.ttf");
         botonComprarDetalleEmpresa.setTypeface(copperplateGothicLight);
+
+        editTextWebEmpresa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(DetalleEmpresa.this, WebViewVisor.class);
+                i.putExtra("url", getUrlWebEmpresa());
+                startActivity(i);
+            }
+        });
+
+
         botonComprarDetalleEmpresa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -249,6 +290,38 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
         });
 
 
+    }
+
+    public String getUrlWebEmpresa() {
+        return urlWebEmpresa;
+    }
+
+    public void setUrlWebEmpresa(String urlWebEmpresa) {
+        this.urlWebEmpresa = urlWebEmpresa;
+    }
+
+    public String getImaEmpresa() {
+        return imaEmpresa;
+    }
+
+    public void setImaEmpresa(String imaEmpresa) {
+        this.imaEmpresa = imaEmpresa;
+    }
+
+    public String getNomEmpresa() {
+        return nomEmpresa;
+    }
+
+    public void setNomEmpresa(String nomEmpresa) {
+        this.nomEmpresa = nomEmpresa;
+    }
+
+    public String getDirEmpresa() {
+        return dirEmpresa;
+    }
+
+    public void setDirEmpresa(String dirEmpresa) {
+        this.dirEmpresa = dirEmpresa;
     }
 
     private void llamar(String number)
@@ -420,6 +493,32 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
         ControllerSingleton.getInstance().cancelPendingReq("findEmpresa");
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater findMenuItems = getMenuInflater();
+        findMenuItems.inflate(R.menu.menu_location, menu);
+        menuItem=menu.findItem(R.id.menu_location_empresa);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_location_empresa:
+                Intent i = new Intent(DetalleEmpresa.this, UbicacionEmpresa.class);
+                i.putExtra("lat",getLatitudEmpresa());
+                i.putExtra("lon",getLongitudEmpresa());
+                i.putExtra("nomEmpresa",getNomEmpresa());
+                i.putExtra("dirEmpresa",getDirEmpresa());
+                i.putExtra("imaEmpresa",getImaEmpresa());
+                startActivity(i);
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void WebServiceGetEmpresas(final String id)
     {
@@ -438,12 +537,46 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
                             {
                                 JSONObject empresa = response.getJSONObject("empresa");
 
+
+                                if(!TextUtils.isEmpty(empresa.getString("latitud"))&&!TextUtils.isEmpty(empresa.getString("latitud")))
+                                {
+                                    menuItem.setVisible(true);
+                                }
+
                                 setDatoWebEmpresa(empresa.getString("urlWeb"));
                                 setDatoComprarEmpresa(empresa.getString("urlComprar"));
                                 setDatoLlamarEmpresa(empresa.getString("telefono"));
                                 setLatitudEmpresa(empresa.getString("latitud"));
                                 setLongitudEmpresa(empresa.getString("longitud"));
                                 setDescripcionEmpresa(empresa.getString("descripcion"));
+                                setImaEmpresa(empresa.getString("urlImagen"));
+
+                                setNomEmpresa(empresa.getString("nombre"));
+                                setDirEmpresa(empresa.getString("direccion"));
+                                setUrlWebEmpresa(empresa.getString("urlWeb"));
+
+                                if(TextUtils.isEmpty(empresa.getString("telefono")))
+                                {
+                                    editTextTelefonoEmpresaDetalle.setText("TELÉFONO NO DISPONIBLE");
+                                }
+                                else
+                                {
+                                    editTextTelefonoEmpresaDetalle.setText(empresa.getString("telefono"));
+                                }
+
+
+
+                                editTextWebEmpresa.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+                                if(TextUtils.isEmpty(empresa.getString("urlWeb")))
+                                {
+                                    editTextWebEmpresa.setText("WEBSITE NO DISPONIBLE");
+                                }
+                                else
+                                {
+                                    editTextWebEmpresa.setText(empresa.getString("urlWeb"));
+                                }
+
 
                                 if(empresa.getString("urlImagen").equals(""))
                                 {
@@ -480,7 +613,17 @@ public class DetalleEmpresa extends AppCompatActivity implements RationaleListen
                                 }
 
                                 editTextNombreDetalleEmpresa.setText(empresa.getString("nombre"));
-                                editTextDireccionDetalleEmpresa.setText(empresa.getString("direccion"));
+
+                                if(TextUtils.isEmpty(empresa.getString("direccion")))
+                                {
+                                    editTextDireccionDetalleEmpresa.setText("DIRECCIÓN NO DISPONIBLE");
+                                }
+                                else
+                                {
+                                    editTextDireccionDetalleEmpresa.setText(empresa.getString("direccion"));
+                                }
+
+
 
                                 layoutMacroEspera.setVisibility(View.GONE);
                                 llDetalle.setVisibility(View.VISIBLE);

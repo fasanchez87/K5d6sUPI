@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.DetalleEmpresa"
-    android:fillViewport="true">
-
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".activity.DetalleEmpresa"
+        android:fillViewport="true"
         android:orientation="vertical"
         android:layout_above="@+id/rlDetalle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:fitsSystemWindows="true">
 
@@ -53,6 +50,7 @@
 
         </LinearLayout>
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -88,6 +86,16 @@
             </RelativeLayout>
 
         </RelativeLayout>
+
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".activity.DetalleEmpresa"
+        android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,8 +140,6 @@
             android:paddingTop="17dp"
             android:textSize="18sp"
             android:textStyle="bold"/>
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -197,7 +203,7 @@
                 android:layout_height="wrap_content" />
 
             <com.ingeniapps.dicmax.Text.FontStylerView
-                android:id="@+id/editTextDireccionDetalleEmpresa"
+                android:id="@+id/editTextTelefonoEmpresaDetalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -242,13 +248,15 @@
                 android:layout_height="wrap_content" />
 
             <com.ingeniapps.dicmax.Text.FontStylerView
-                android:id="@+id/editTextDireccionDetalleEmpresa"
+                android:id="@+id/editTextWebEmpresa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
-                android:text="www.prueba.com"
+                android:paddingRight="30dp"
+                android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                android:textColorLink="@color/colorAzulDicmax"
                 app:fontName="AvenirLTStd-Light"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -274,11 +282,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="4dp"
+            android:visibility="gone"
             android:paddingLeft="20dp">
 
             <ImageView
                 android:layout_width="18dp"
                 android:layout_height="18dp"
+                android:visibility="gone"
                 android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_locations" />
 
@@ -287,7 +297,7 @@
                 android:layout_height="wrap_content" />
 
             <com.ingeniapps.dicmax.Text.FontStylerView
-                android:id="@+id/editTextDireccionDetalleEmpresa"
+                android:id="@+id/editTextCoordenadasEmpresa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -307,6 +317,7 @@
                 android:paddingTop="1dp"
                 android:textStyle="bold"
                 android:textColor="@color/colorGrisTextCollpser"
+                android:visibility="gone"
                 android:textSize="16sp"/>
         </LinearLayout>
 
@@ -314,7 +325,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="7dp"
             android:paddingLeft="22dp"
             android:paddingRight="22dp"
             android:text="Naturalmente Sanodsdsdsdddddddddddddddddddddddddddddddddddddsdsdsdsddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
@@ -419,8 +430,7 @@
 
 </LinearLayout>
 
-
+    </ScrollView>
 
     </LinearLayout>
 
-</ScrollView>

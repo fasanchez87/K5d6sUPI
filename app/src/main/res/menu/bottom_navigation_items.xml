@@ -9,15 +9,17 @@
         android:icon="@drawable/ic_comercios"
         android:title="Convenios"/>
     <item
-        android:id="@+id/action_pagos"
-        android:icon="@drawable/ic_calendar"
-        android:title="Pagos"/>
+        android:id="@+id/action_cuenta"
+        android:icon="@drawable/ic_user"
+        android:title="Mi cuenta"/>
     <item
         android:id="@+id/action_historial"
         android:icon="@drawable/ic_historial"
         android:title="Historial"/>
     <item
-        android:id="@+id/action_cuenta"
-        android:icon="@drawable/ic_user"
-        android:title="Cuenta"/>
+        android:id="@+id/action_contacto"
+        android:icon="@drawable/ic_contact"
+        android:title="Contacto"/>
+
+
 </menu>

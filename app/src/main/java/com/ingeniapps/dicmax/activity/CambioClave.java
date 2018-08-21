@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -29,6 +32,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ingeniapps.dicmax.R;
+import com.ingeniapps.dicmax.fragment.Contacto;
 import com.ingeniapps.dicmax.helper.AlertasErrores;
 import com.ingeniapps.dicmax.sharedPreferences.gestionSharedPreferences;
 import com.ingeniapps.dicmax.volley.ControllerSingleton;
@@ -42,7 +46,8 @@ import java.util.Map;
 
 public class CambioClave extends AppCompatActivity
 {
-    private EditText edit_text_clave,edit_text_confirmar_clave;
+    private EditText edit_text_clave,edit_text_confirmar_clave,edit_text_clave_old;
+    private TextInputLayout input_layout_clave_old,input_layout_clave,input_layout_confirmar_clave;
     private Button buttonCambioDisable, buttonCambioClaveEnable;
     private LinearLayout linearLoadingCambioClave;
     private vars vars;
@@ -50,12 +55,32 @@ public class CambioClave extends AppCompatActivity
     private gestionSharedPreferences sharedPreferences;
     CoordinatorLayout coordinatorCambioClave;
     AlertasErrores alertarErrores;
+    private Typeface copperplateGothicLight;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cambio_clave);
+        copperplateGothicLight = Typeface.createFromAsset(CambioClave.this.getAssets(), "fonts/AvenirLTStd-Light.ttf");
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //this line shows back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setElevation(0);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                finish();
+            }
+        });
 
         context=this;
         vars=new vars();
@@ -63,27 +88,47 @@ public class CambioClave extends AppCompatActivity
         coordinatorCambioClave=(CoordinatorLayout)findViewById(R.id.coordinatorCambioClave);
         linearLoadingCambioClave=(LinearLayout) findViewById(R.id.linearLoadingCambioClave);
 
+        input_layout_clave_old=(TextInputLayout) findViewById(R.id.input_layout_clave_old);
+        input_layout_clave=(TextInputLayout) findViewById(R.id.input_layout_clave);
+        input_layout_confirmar_clave=(TextInputLayout) findViewById(R.id.input_layout_confirmar_clave);
+
+        input_layout_clave_old.setTypeface(copperplateGothicLight);
+        input_layout_clave.setTypeface(copperplateGothicLight);
+        input_layout_confirmar_clave.setTypeface(copperplateGothicLight);
+
         edit_text_clave=(EditText)findViewById(R.id.edit_text_clave);
         edit_text_clave.addTextChangedListener(new CambioClave.GenericTextWatcher(edit_text_clave));
+        edit_text_clave.setTypeface(copperplateGothicLight);
+
 
         edit_text_confirmar_clave=(EditText)findViewById(R.id.edit_text_confirmar_clave);
         edit_text_confirmar_clave.addTextChangedListener(new CambioClave.GenericTextWatcher(edit_text_confirmar_clave));
+        edit_text_confirmar_clave.setTypeface(copperplateGothicLight);
+
+
+        edit_text_clave_old=(EditText)findViewById(R.id.edit_text_clave_old);
+        edit_text_clave_old.setTypeface(copperplateGothicLight);
+        edit_text_clave_old.addTextChangedListener(new CambioClave.GenericTextWatcher(edit_text_clave_old));
+
 
         buttonCambioDisable=(Button)findViewById(R.id.buttonCambioDisable);
 
         buttonCambioClaveEnable=(Button)findViewById(R.id.buttonCambioClaveEnable);
+
+        buttonCambioDisable.setTypeface(copperplateGothicLight);
+        buttonCambioClaveEnable.setTypeface(copperplateGothicLight);
         buttonCambioClaveEnable.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                WebServiceCambioClave(edit_text_clave.getText().toString(),edit_text_confirmar_clave.getText().toString());
+                WebServiceCambioClave(edit_text_clave.getText().toString(),edit_text_confirmar_clave.getText().toString(),edit_text_clave_old.getText().toString());
             }
         });
 
     }
 
-    private void WebServiceCambioClave(final String clave, final String confirmarClave)
+    private void WebServiceCambioClave(final String clave, final String confirmarClave, final String claveActual)
     {
         String _urlWebService=vars.ipServer.concat("/ws/changePass");
 
@@ -92,6 +137,7 @@ public class CambioClave extends AppCompatActivity
         linearLoadingCambioClave.setVisibility(View.VISIBLE);
         edit_text_clave.setEnabled(false);
         edit_text_confirmar_clave.setEnabled(false);
+        edit_text_clave_old.setEnabled(false);
 
         JsonObjectRequest jsonObjReq=new JsonObjectRequest(Request.Method.POST, _urlWebService, null,
                 new Response.Listener<JSONObject>()
@@ -115,6 +161,7 @@ public class CambioClave extends AppCompatActivity
 
                                     edit_text_clave.setEnabled(false);
                                     edit_text_confirmar_clave.setEnabled(false);
+                                    edit_text_clave_old.setEnabled(false);
 
 
                                     AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(CambioClave.this,R.style.AlertDialogTheme));
@@ -144,6 +191,7 @@ public class CambioClave extends AppCompatActivity
                                     linearLoadingCambioClave.setVisibility(View.INVISIBLE);
                                     edit_text_clave.setEnabled(true);
                                     edit_text_confirmar_clave.setEnabled(true);
+                                    edit_text_clave_old.setEnabled(true);
                                 }
                             }
 
@@ -198,7 +246,8 @@ public class CambioClave extends AppCompatActivity
                 HashMap<String, String> headers = new HashMap <String, String>();
                 headers.put("Content-Type", "application/json; charset=utf-8");
                 headers.put("WWW-Authenticate", "xBasic realm=".concat(""));
-                headers.put("usuario", sharedPreferences.getString("codUsuario") );
+                headers.put("codUsuario", sharedPreferences.getString("codUsuario") );
+                headers.put("passwordOld", claveActual);
                 headers.put("password", clave);
                 headers.put("passwordConfirm", confirmarClave);
                 return headers;
@@ -232,6 +281,14 @@ public class CambioClave extends AppCompatActivity
 
         public void afterTextChanged(Editable editable)
         {
+
+
+            if(TextUtils.isEmpty(edit_text_clave_old.getText()))
+            {
+                buttonCambioDisable.setVisibility(View.VISIBLE);
+                buttonCambioClaveEnable.setVisibility(View.GONE);
+                return;
+            }
 
             if(edit_text_clave.getText().toString().length()<=4)
             {

@@ -372,8 +372,32 @@
                     android:layout_below="@+id/progressBar"
                     android:layout_centerInParent="true"
                     android:gravity="left"
+                    android:text="sdsdsdsdsd"
                     android:paddingBottom="5dp"
                     android:textColor="@color/colorNegro"
+                    />
+
+                <com.ingeniapps.dicmax.Text.FontStylerView
+                    android:id="@+id/comPagos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="10dp"
+                    android:text="Ver compromisos de pago..."
+                    android:textStyle="bold"
+                    android:textSize="17dp"
+                    app:fontName="AvenirLTStd-Black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+                    app:layout_constraintVertical_bias="0.904"
+                    android:layout_below="@+id/progressBar"
+                    android:layout_centerInParent="true"
+                    android:gravity="left"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textColor="@color/colorVerde"
                     />
 
             </LinearLayout>

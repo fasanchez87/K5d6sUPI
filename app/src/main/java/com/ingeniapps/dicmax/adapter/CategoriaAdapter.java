@@ -3,7 +3,9 @@ package com.ingeniapps.dicmax.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -125,16 +127,32 @@ public class CategoriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     {
         //public NetworkImageView imagenPerfil;
         public FontStylerView textViewNombreCategoria;
+        public FontStylerView textViewNombreCategoriaRecarga;
+        public CardView cardViewCompra;
+        public CardView cardViewRecarga;
 
         public CategoriaHolder(View view)
         {
             super(view);
             textViewNombreCategoria=(FontStylerView) view.findViewById(R.id.textViewNombreCategoria);
+            textViewNombreCategoriaRecarga=(FontStylerView) view.findViewById(R.id.textViewNombreCategoriaRecarga);
+            cardViewCompra=(CardView) view.findViewById(R.id.cardViewCompra);
+            cardViewRecarga=(CardView) view.findViewById(R.id.cardViewRecarga);
         }
 
         void bindData(final Categoria categoria)
         {
-            textViewNombreCategoria.setText(categoria.getNomCategoria());
+
+            if(TextUtils.equals(categoria.getCodCategoria(),"12"))//CATEGORIA DE RECARGAS
+            {
+                textViewNombreCategoriaRecarga.setText(categoria.getNomCategoria());
+                cardViewRecarga.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                textViewNombreCategoria.setText(categoria.getNomCategoria());//CATEOORIA NORMAL DE COMPRA
+                cardViewCompra.setVisibility(View.VISIBLE);
+            }
 
             itemView.setOnClickListener(new View.OnClickListener()
             {

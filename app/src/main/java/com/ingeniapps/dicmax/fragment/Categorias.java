@@ -1,5 +1,6 @@
 package com.ingeniapps.dicmax.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,6 +25,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -45,8 +50,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.ingeniapps.dicmax.activity.Buscar;
+import com.ingeniapps.dicmax.activity.BuscarCiudad;
 import com.ingeniapps.dicmax.activity.DetalleEmpresa;
 import com.ingeniapps.dicmax.activity.Inicio;
+import com.ingeniapps.dicmax.activity.Login;
+import com.ingeniapps.dicmax.activity.RecargasElectronicas;
 import com.ingeniapps.dicmax.adapter.CategoriaAdapter;
 import com.ingeniapps.dicmax.beans.Categoria;
 import com.ingeniapps.dicmax.sharedPreferences.gestionSharedPreferences;
@@ -89,7 +97,8 @@ public class Categorias extends Fragment
     //VERSION DEL APP INSTALADA
     private String versionActualApp;
     private Typeface copperplateGothicLight;
-
+    private MenuItem menuItem;
+    private Boolean guardarSesion;
 
     CardView cardViewCategorias;
     FloatingActionButton botonComprar;
@@ -103,10 +112,12 @@ public class Categorias extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         sharedPreferences=new gestionSharedPreferences(getActivity().getApplicationContext());
         listadoCategorias=new ArrayList<Categoria>();
         vars=new vars();
         context = getActivity();
+        guardarSesion=sharedPreferences.getBoolean("GuardarSesion");
         pagina=0;
     }
 
@@ -130,43 +141,36 @@ public class Categorias extends Fragment
             @Override
             public void onItemClick(Categoria categoria)
             {
-                Intent i=new Intent(Categorias.this.getActivity(),Buscar.class);
-                i.putExtra("idCategoria",categoria.getCodCategoria());
-                i.putExtra("nomCategoria",categoria.getNomCategoria());
-                startActivity(i);
+
+                if(TextUtils.equals(categoria.getCodCategoria(),"12")&& !guardarSesion)//SI ES INVITADO LO SACAMOS
+                {
+                    cargarLogin();
+                }
+                else
+                if(TextUtils.equals(categoria.getCodCategoria(),"12"))//CATEGORIA RECARGAS
+                {
+                    Intent i=new Intent(Categorias.this.getActivity(),RecargasElectronicas.class);
+                    startActivity(i);
+                }
+                else
+                {
+                    Intent i=new Intent(Categorias.this.getActivity(),Buscar.class);
+                    i.putExtra("idCategoria",categoria.getCodCategoria());
+                    i.putExtra("nomCategoria",categoria.getNomCategoria());
+                    i.putExtra("codCiudad",sharedPreferences.getString("codCiudad"));
+                    startActivity(i);
+                }
             }
         });
-
-
 
         recycler_view_categorias.setHasFixedSize(true);
         recycler_view_categorias.setLayoutManager(mLayoutManager);
         recycler_view_categorias.setItemAnimator(new DefaultItemAnimator());
         recycler_view_categorias.setAdapter(mAdapter);
 
-      /*  EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager)
-        {
-            @Override
-            public void onLoadMore(final int page, final int totalItemsCount, final RecyclerView view)
-            {
-                final int curSize = mAdapter.getItemCount();
-
-                view.post(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        if(!solicitando)
-                        {
-                            WebServiceGetNoticiasMore();
-                        }
-                    }
-                });
-            }
-        };*/
-
         copperplateGothicLight = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AvenirLTStd-Light.ttf");
         editTextBuscarInicio=(EditText)getActivity().findViewById(R.id.editTextBuscarInicio);
+        //editTextBuscarInicio.setHint("¿Buscas algo en "+sharedPreferences.getString("nomCiudad")+"?");//CIUDAD INICIAL DEL USUARIO
         editTextBuscarInicio.setTypeface(copperplateGothicLight);
         editTextBuscarInicio.setInputType(InputType.TYPE_NULL);
         editTextBuscarInicio.setOnClickListener(new View.OnClickListener() {
@@ -213,12 +217,18 @@ public class Categorias extends Fragment
             e.printStackTrace();
         }
 
-
-//        recycler_view_noticias.addOnScrollListener(scrollListener);
-        //WebServiceGetNoticias();
-
-        WebServiceGetCategorias();
+        WebServiceGetCategorias(sharedPreferences.getString("codCiudad"));
     }
+
+    public void cargarLogin()
+    {
+        Intent intent = new Intent(Categorias.this.getActivity(), Login.class);//CERRAMOS LAS ACTIVIDADES TODAS ANTERIORES CREADAS
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -239,34 +249,58 @@ public class Categorias extends Fragment
     {
         super.onResume();
 
+
         //updateTokenFCMToServer(tokenFCM);
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null)
-        {
-            if(result.getContents() == null)
-            {
-                Snackbar.make(getActivity().findViewById(android.R.id.content),
-                        "Compra cancelada", Snackbar.LENGTH_LONG).show();
-            }
-            else
-            {
-                //LLAMADO WEB SERVICE
-                //WebServiceConsultarQR(result.getContents());
-                Snackbar.make(getActivity().findViewById(android.R.id.content),
-                        "Acabo de leer: "+result.getContents(), Snackbar.LENGTH_LONG).show();
-            }
-        }
-        else
-        {
-            // This is important, otherwise the result will not be passed to the fragment
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+        MenuInflater findMenuItems = getActivity().getMenuInflater();
+        findMenuItems.inflate(R.menu.menu_conf_ciudad, menu);
+        menuItem=menu.findItem(R.id.menu_location_empresa);
+        super.onCreateOptionsMenu(menu, inflater);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1)
+        {
+            if(resultCode == Activity.RESULT_OK)
+            {
+                String result=data.getStringExtra("codCiudad");
+                //Toast.makeText(Categorias.this.getActivity(),"Resultado: "+sharedPreferences.getString("codCiudad"),Toast.LENGTH_LONG).show();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(this).attach(this).commit();
+                //WebServiceGetCategorias(sharedPreferences.getString("codCiudad"));
+            }
+            if (resultCode == Activity.RESULT_CANCELED)
+            {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId()) {
+
+            case R.id.menu_location_empresa:
+
+                Intent i = new Intent(Categorias.this.getActivity(), BuscarCiudad.class);
+                startActivityForResult(i, 1);
+               return false;
+
+
+            default:
+                break;
+        }
+
+        return false;
+    }
+
 
     @Override
     public void onDestroy()
@@ -276,10 +310,12 @@ public class Categorias extends Fragment
     }
 
 
-    private void WebServiceGetCategorias()
+    private void WebServiceGetCategorias(final String codCiudad)
     {
         listadoCategorias.clear();
         String _urlWebService = vars.ipServer.concat("/ws/getCategorias");
+
+        //Toast.makeText(Categorias.this.getActivity(),"CodCiudad es: "+codCiudad,Toast.LENGTH_LONG).show();
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, _urlWebService, null,
                 new Response.Listener<JSONObject>()
@@ -291,8 +327,6 @@ public class Categorias extends Fragment
                         {
                             if(response.getBoolean("status"))
                             {
-
-
                                 JSONArray listaCategorias = response.getJSONArray("categorias");
 
                                 for (int i = 0; i < listaCategorias.length(); i++)
@@ -305,9 +339,24 @@ public class Categorias extends Fragment
                                     listadoCategorias.add(categoria);
                                 }
 
+                                if (guardarSesion==false && !TextUtils.isEmpty(sharedPreferences.getString("nomCiudad")))//SI ES INVITADO
+                                {
+                                    editTextBuscarInicio.setHint("¿Buscas algo en "+sharedPreferences.getString("nomCiudad")+"?");//CIUDAD INICIAL DEL USUARIO
+                                }
+                                else
+                                if (guardarSesion==false)//SI ES INVITADO
+                                {
+                                    editTextBuscarInicio.setHint("¿Buscas algo?");//CIUDAD INICIAL DEL USUARIO
+                                }
+                                else
+                                {
+                                    editTextBuscarInicio.setHint("¿Buscas algo en "+sharedPreferences.getString("nomCiudad")+"?");//CIUDAD INICIAL DEL USUARIO
+                                }
+
                                 layoutMacroEsperaCategorias.setVisibility(View.GONE);
                                 //recycler_view_categorias.setVisibility(View.VISIBLE);
                                 linearHabilitarCompras.setVisibility(View.VISIBLE);
+                                menuItem.setVisible(true);
                                 //botonComprar.setVisibility(View.VISIBLE);
                             }
 
@@ -472,6 +521,7 @@ public class Categorias extends Fragment
                 headers.put("Content-Type", "application/json; charset=utf-8");
                 headers.put("WWW-Authenticate", "xBasic realm=".concat(""));
                 headers.put("versionApp",versionActualApp);
+                headers.put("codCiudad",codCiudad);//CIUDAD INICIAL DEL USUARIO
                 headers.put("MyToken", sharedPreferences.getString("MyToken"));
                 return headers;
             }

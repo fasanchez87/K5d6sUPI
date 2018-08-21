@@ -6,7 +6,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -57,6 +59,7 @@ public class Registro extends AppCompatActivity
     private String tokenFCM;
     private boolean checkTerminos;
     EditText editTextNombreUsuario,editTextApellidoUsuario,editTextTelUsuario,editTextEmailUsuario,editTextCedulaUsuario,editTextClave;
+    TextInputLayout input_layout_nombre_usuario,input_layout_ape_usuario,input_layout_tel_usuario,input_layout_email_usuario,input_layout_cedula_usuario,input_layout_clave_usuario;
     private Button buttonIngresar,buttonIngresarDisable;
     SpinKitView spin_kit_registro;
     FontStylerView textViewIngresoInvitado;
@@ -68,6 +71,8 @@ public class Registro extends AppCompatActivity
     Context context;
     private ProgressDialog progressDialog;
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private Typeface copperplateGothicLight;
+
 
 
     CoordinatorLayout coordinatorLayoutRegistro;
@@ -80,6 +85,26 @@ public class Registro extends AppCompatActivity
         checkTerminos=false;
         vars=new vars();
         context=Registro.this;
+        copperplateGothicLight = Typeface.createFromAsset(Registro.this.getAssets(), "fonts/AvenirLTStd-Light.ttf");
+
+        input_layout_nombre_usuario=(TextInputLayout) findViewById(R.id.input_layout_nombre_usuario);
+        input_layout_ape_usuario=(TextInputLayout) findViewById(R.id.input_layout_ape_usuario);
+        input_layout_tel_usuario=(TextInputLayout) findViewById(R.id.input_layout_tel_usuario);
+        input_layout_email_usuario=(TextInputLayout) findViewById(R.id.input_layout_email_usuario);
+        input_layout_cedula_usuario=(TextInputLayout) findViewById(R.id.input_layout_cedula_usuario);
+        input_layout_clave_usuario=(TextInputLayout) findViewById(R.id.input_layout_clave_usuario);
+
+        input_layout_nombre_usuario.setTypeface(copperplateGothicLight);
+        input_layout_ape_usuario.setTypeface(copperplateGothicLight);
+        input_layout_tel_usuario.setTypeface(copperplateGothicLight);
+        input_layout_email_usuario.setTypeface(copperplateGothicLight);
+        input_layout_cedula_usuario.setTypeface(copperplateGothicLight);
+        input_layout_clave_usuario.setTypeface(copperplateGothicLight);
+
+
+
+
+
 
         if(checkPlayServices())
         {
@@ -108,8 +133,10 @@ public class Registro extends AppCompatActivity
         coordinatorLayoutRegistro=(CoordinatorLayout)findViewById(R.id.coordinatorLayoutRegistro);
 
         editTextTerminos=(TextView)findViewById(R.id.editTextTerminos);
+        editTextTerminos.setTypeface(copperplateGothicLight);
+
         Text = Html.fromHtml("Click para ver terminos y condiciones. <br />" +
-                "<a href='http://www.kupi.com.co///'>Acepto los términos y condiciones.</a>");
+                "<a href='http://www.kupi.com.co/terms'>Acepto los términos y condiciones.</a>");
         editTextTerminos.setMovementMethod(LinkMovementMethod.getInstance());
         editTextTerminos.setText(Text);
 
@@ -133,6 +160,17 @@ public class Registro extends AppCompatActivity
 
         buttonIngresar=(Button)findViewById(R.id.buttonIngresar);
         buttonIngresarDisable=(Button)findViewById(R.id.buttonIngresarDisable);
+
+        buttonIngresar.setTypeface(copperplateGothicLight);
+        buttonIngresarDisable.setTypeface(copperplateGothicLight);
+
+        editTextNombreUsuario.setTypeface(copperplateGothicLight);
+        editTextApellidoUsuario.setTypeface(copperplateGothicLight);
+        editTextTelUsuario.setTypeface(copperplateGothicLight);
+        editTextEmailUsuario.setTypeface(copperplateGothicLight);
+        editTextCedulaUsuario.setTypeface(copperplateGothicLight);
+        editTextClave.setTypeface(copperplateGothicLight);
+
 
         spin_kit_registro=(SpinKitView)findViewById(R.id.spin_kit_registro);
         textViewIngresoInvitado=(FontStylerView)findViewById(R.id.textViewIngresoInvitado);

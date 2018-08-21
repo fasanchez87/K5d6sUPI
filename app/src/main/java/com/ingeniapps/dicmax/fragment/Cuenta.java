@@ -37,7 +37,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ingeniapps.dicmax.R;
 import com.ingeniapps.dicmax.Text.FontStylerView;
-import com.ingeniapps.dicmax.activity.CambioClave;
+import com.ingeniapps.dicmax.activity.*;
 import com.ingeniapps.dicmax.adapter.CompromisoAdapter;
 import com.ingeniapps.dicmax.beans.Compromiso;
 import com.ingeniapps.dicmax.sharedPreferences.gestionSharedPreferences;
@@ -60,7 +60,7 @@ import java.util.Map;
  */
 public class Cuenta extends Fragment
 {
-    private FontStylerView editTextCupoBono, editTextCupo, editTextTotalCupo, editTextNombre, editTextCedula, editTextCelular, editTextEmail;
+    private FontStylerView editTextCupoBono, editTextCupo, editTextTotalCupo, editTextNombre, editTextCedula, editTextCelular, editTextEmail,comPagos;
     private Button buttonCambioClave;
     private gestionSharedPreferences sharedPreferences;
     private vars vars;
@@ -69,8 +69,9 @@ public class Cuenta extends Fragment
     RelativeLayout layoutMacroEsperaCuenta;
 
     Context context;
-    private Typeface copperplateGothicLight;
     private NumberFormat numberFormat=NumberFormat.getNumberInstance(Locale.GERMAN);
+    private Typeface copperplateGothicLight;
+
 
 
     @Override
@@ -85,7 +86,6 @@ public class Cuenta extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         sharedPreferences=new gestionSharedPreferences(getActivity().getApplicationContext());
         vars=new vars();
         context = getActivity();
@@ -93,35 +93,12 @@ public class Cuenta extends Fragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        // TODO Add your menu entries here
-        inflater.inflate(R.menu.menu_cerrar_sesion, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.action_cerrar_sesion:
-
-
-
-
-                return true;
-            default:
-                break;
-        }
-
-        return true;
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+
+        copperplateGothicLight = Typeface.createFromAsset(Cuenta.this.getActivity().getAssets(), "fonts/AvenirLTStd-Light.ttf");
+
 
         layoutMacroEsperaCuenta=(RelativeLayout)getActivity().findViewById(R.id.layoutMacroEsperaCuenta);
         linearHabilitarPagos=(LinearLayout)getActivity().findViewById(R.id.linearHabilitarPagos);
@@ -133,7 +110,21 @@ public class Cuenta extends Fragment
         editTextCedula=(FontStylerView) getActivity().findViewById(R.id.editTextCedula);
         editTextCelular=(FontStylerView) getActivity().findViewById(R.id.editTextCelular);
         editTextEmail=(FontStylerView) getActivity().findViewById(R.id.editTextEmail);
+        comPagos=(FontStylerView) getActivity().findViewById(R.id.comPagos);
+        comPagos.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent i=new Intent(Cuenta.this.getActivity(), com.ingeniapps.dicmax.activity.Compromisos.class);
+                startActivity(i);
+            }
+        });
+
+
         buttonCambioClave=(Button) getActivity().findViewById(R.id.buttonCambioClave);
+        buttonCambioClave.setTypeface(copperplateGothicLight);
+
         buttonCambioClave.setOnClickListener(new View.OnClickListener()
         {
             @Override

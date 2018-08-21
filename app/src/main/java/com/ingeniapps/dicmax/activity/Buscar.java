@@ -78,10 +78,7 @@ public class Buscar extends AppCompatActivity
     private String versionActualApp;
     private Typeface copperplateGothicLight;
 
-
     private ProgressDialog progressDialog;
-
-
 
     CardView cardViewCategorias;
 
@@ -89,6 +86,7 @@ public class Buscar extends AppCompatActivity
     TextView editTextNumEmpresas;
     private String idCategoria;
     private String nomCategoria;
+    private String codCiudad;
 
     DividerItemDecoration mDividerItemDecoration;
 
@@ -178,7 +176,7 @@ public class Buscar extends AppCompatActivity
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     //OCULTAMOS TECLADO
                     imm.hideSoftInputFromWindow(editTextBusqueda.getWindowToken(), 0);
-                    WebServiceGetEmpresas(editTextBusqueda.getText().toString(),null);
+                    WebServiceGetEmpresas(editTextBusqueda.getText().toString(),null,sharedPreferences.getString("codCiudad"));
                /* }*/
                /* else
                 {
@@ -205,16 +203,18 @@ public class Buscar extends AppCompatActivity
             {
                 idCategoria = null;
                 nomCategoria = null;
+                codCiudad = null;
             }
             else
             {
                 idCategoria = extras.getString("idCategoria");
                 nomCategoria = extras.getString("nomCategoria");
+                codCiudad = extras.getString("codCiudad");
             }
         }
 
 
-        WebServiceGetEmpresas(null,TextUtils.isEmpty(idCategoria)?null:idCategoria);
+        WebServiceGetEmpresas(null,TextUtils.isEmpty(idCategoria)?null:idCategoria,sharedPreferences.getString("codCiudad"));
 
     }
 
@@ -227,7 +227,7 @@ public class Buscar extends AppCompatActivity
     }
 
 
-    private void WebServiceGetEmpresas(final String busqueda, final String categoria)
+    private void WebServiceGetEmpresas(final String busqueda, final String categoria, final String codCiudad)
     {
 
         String _urlWebService = vars.ipServer.concat("/ws/getEmpresas");
@@ -468,6 +468,7 @@ public class Buscar extends AppCompatActivity
                 headers.put("WWW-Authenticate", "xBasic realm=".concat(""));
                 headers.put("buscar", TextUtils.isEmpty(busqueda)?"":busqueda);
                 headers.put("categoria", TextUtils.isEmpty(categoria)?"":categoria);
+                headers.put("codCiudad", codCiudad);
                 return headers;
             }
         };

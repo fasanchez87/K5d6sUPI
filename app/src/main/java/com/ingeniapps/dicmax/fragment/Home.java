@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -47,6 +48,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -87,8 +89,6 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
     private Boolean guardarSesion;
 
 
-
-
     private int pagina;
     Context context;
     private boolean solicitando=false;
@@ -101,6 +101,7 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         vars=new vars();
         context = getActivity();
         sharedPreferences=new gestionSharedPreferences(Home.this.getActivity());
@@ -115,6 +116,29 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
         // Inflate the layout for this fragment
         //setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        // TODO Add your menu entries here
+        inflater.inflate(R.menu.menu_notificacion, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.action_contacto:
+                // Not implemented here
+            default:
+                break;
+        }
+
+        return false;
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState)
@@ -243,42 +267,11 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
         materialBarcodeScanner.startScan();
     }
 
-    /*@Override
-    public void onPrepareOptionsMenu(Menu menu)
-    {
-        super.onPrepareOptionsMenu(menu);
-        //menu.findItem(R.id.menu_busqueda).setVisible(true);
-        super.onPrepareOptionsMenu(menu);
-    }*/
-
-   /* @Override
-    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-       // inflater.inflate(R.menu.menu_buscar, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }*/
-
-   /* @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        int id = item.getItemId();
-        switch (id)
-        {
-            *//*case R.id.menu_busqueda:
-            {
-                Intent buscar=new Intent(fragment_ccomercial.this.getActivity(),Buscar.class);
-                startActivity(buscar);
-                break;
-            }*//*
-        }
-        return true;
-    }*/
-
     @Override
     public void onResume()
     {
         super.onResume();
+        //Toast.makeText(Home.this.getActivity(),"Home: codCiudad es: "+sharedPreferences.getString("codCiudad"),Toast.LENGTH_LONG).show();
         mDemoSlider.startAutoCycle();
     }
 
@@ -352,9 +345,12 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
                                     timestamp = Long.parseLong(jsonObject.getString("fecExpiraPromo")) * 1000L;
                                     timeAgo = DateUtils.getRelativeTimeSpanString(timestamp,
                                             System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-                                    TextSliderView textSliderView = new TextSliderView(Home.this.getActivity());
+                                    //TextSliderView textSliderView = new TextSliderView(Home.this.getActivity());OCULTAMOS EL TEXTO DE FECHA DE PUBLICACION
+                                    DefaultSliderView textSliderView = new DefaultSliderView(Home.this.getActivity());//LO REEMPLAZO POR EL DE ARRIBA
+
                                     textSliderView
-                                            .description("" + timeAgo)
+                                            .description("")
+                                            //.description("" + timeAgo)
                                             .image(jsonObject.getString("imgPromo"))
                                             .setScaleType(BaseSliderView.ScaleType.Fit)
                                             .setOnSliderClickListener((BaseSliderView.OnSliderClickListener)Home.this);
@@ -368,9 +364,9 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
                                 mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
                                 mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
                                 mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-                                mDemoSlider.setDuration(5000);
+                                mDemoSlider.setDuration(4000);
                                 mDemoSlider.addOnPageChangeListener((ViewPagerEx.OnPageChangeListener) Home.this);
-                                mDemoSlider.setPresetTransformer("ZoomOut");
+                                mDemoSlider.setPresetTransformer("Default");
 
                                 relativeLayoutEsperaCarga.setVisibility(View.GONE);
                                 relativeLayoutCargaPromos.setVisibility(View.VISIBLE);
@@ -526,6 +522,7 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
                 HashMap<String, String> headers = new HashMap <String, String>();
                 headers.put("Content-Type", "application/json; charset=utf-8");
                 headers.put("WWW-Authenticate", "xBasic realm=".concat(""));
+                headers.put("codCiudad", sharedPreferences.getString("codCiudad"));
               /*  headers.put("buscar", TextUtils.isEmpty(busqueda)?"":busqueda);
                 headers.put("categoria", TextUtils.isEmpty(codEmpleado)?"":codEmpleado);*/
                 //headers.put("MyToken", gestionSharedPreferences.getString("MyToken"));

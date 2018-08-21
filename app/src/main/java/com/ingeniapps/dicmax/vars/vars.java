@@ -6,8 +6,8 @@ package com.ingeniapps.dicmax.vars;
 public class vars
 {
     //Variables Globales.
-    public String ipServer = "https://kupi.group";//Variable ip de servidor pruebas.
-    //public String ipServer = "https://kupi.com.co";//Variable ip de servidor producción.
+    //public String ipServer = "https://kupi.group";//Variable ip de servidor pruebas.
+    public String ipServer = "https://kupi.com.co";//Variable ip de servidor producción.
     public String urlBaseUploadFotos = "http://ingeniapps.com.co/weser/ws/upload/danos/fotos/";//Variable ip de servidor.
     public String urlBaseUploadFotosFraudes = "http://ingeniapps.com.co/weser/ws/upload/fraudes/fotos/";//Variable ip de servidor.
     public String codSistema = "1";//Android

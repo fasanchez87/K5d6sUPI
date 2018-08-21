@@ -34,7 +34,7 @@
                 android:descendantFocusability="beforeDescendants"
                 android:focusableInTouchMode="true"
                 android:gravity="top"
-                android:background="@drawable/gradient"
+                android:background="@color/colorBlanco"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
@@ -49,7 +49,7 @@
                     android:text="Cambio de Contraseña"
                     android:textColor="@color/colorVerde"
                     android:textSize="19.5dp"
-                    app:fontName="AvenirLTStd-Light"
+                    app:fontName="AvenirLTStd-Black"
                     android:textStyle="bold"
                     android:paddingLeft="3dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -62,11 +62,12 @@
                     android:id="@+id/textViewPluserwer1"
                     android:layout_width="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:gravity="left"
                     android:text="Escriba su nueva contraseña de acceso, mínimo (5) caracteres."
-                    android:textColor="@color/colorBlanco"
+                    android:textColor="@color/colorAzulDicmax"
                     android:textSize="15.5dp"
                     app:fontName="AvenirLTStd-Light"
                     android:textStyle="bold"
@@ -78,45 +79,84 @@
                     app:layout_constraintVertical_bias="0.904" />
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_clave_old"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorEditTextGris"
+                    android:layout_gravity="center"
+                    android:theme="@style/TextLabelInputLayout"
+                    android:gravity="center"
+                    android:textColorHint="@color/colorEditTextGris">
+
+                    <EditText
+                        android:id="@+id/edit_text_clave_old"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorEditTextGris"
+                        android:hint="Contraseña actual"
+                        android:inputType="text"
+                        android:shadowColor="@color/colorEditTextGris"
+                        android:textColor="@color/colorEditTextGris"
+                        android:textColorHint="@color/colorEditTextGris"
+                        android:theme="@style/EditTextFondoBlanco" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_clave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorBlanco"
-                    android:textColor="@color/colorBlanco"
+                    android:backgroundTint="@color/colorEditTextGris"
                     android:layout_gravity="center"
+                    android:theme="@style/TextLabelInputLayout"
                     android:gravity="center"
-                    android:textColorHint="@color/colorBlanco">
+                    android:textColorHint="@color/colorEditTextGris">
 
                     <EditText
                         android:id="@+id/edit_text_clave"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorBlanco"
+                        android:backgroundTint="@color/colorEditTextGris"
                         android:hint="Nueva contraseña"
                         android:inputType="text"
-                        android:textColor="@color/colorBlanco"
-                        android:textColorHint="@color/colorBlanco" />
+                        android:shadowColor="@color/colorEditTextGris"
+                        android:textColor="@color/colorEditTextGris"
+                        android:textColorHint="@color/colorEditTextGris"
+                        android:theme="@style/EditTextFondoBlanco" />
+
                 </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+
+
+
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_confirmar_clave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorBlanco"
-                    android:textColor="@color/colorBlanco"
+                    android:backgroundTint="@color/colorEditTextGris"
                     android:layout_gravity="center"
+                    android:theme="@style/TextLabelInputLayout"
                     android:gravity="center"
-                    android:textColorHint="@color/colorBlanco">
+                    android:textColorHint="@color/colorEditTextGris">
 
                     <EditText
                         android:id="@+id/edit_text_confirmar_clave"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorBlanco"
+                        android:backgroundTint="@color/colorEditTextGris"
                         android:hint="Confirmar contraseña"
                         android:inputType="text"
-                        android:textColor="@color/colorBlanco"
-                        android:textColorHint="@color/colorBlanco" />
+                        android:shadowColor="@color/colorEditTextGris"
+                        android:textColor="@color/colorEditTextGris"
+                        android:textColorHint="@color/colorEditTextGris"
+                        android:theme="@style/EditTextFondoBlanco" />
+
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
@@ -166,7 +206,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
-                        app:SpinKit_Color="@color/colorBlanco"
+                        app:SpinKit_Color="@color/colorAzulDicmax"
                         android:padding="10dp"
                         android:gravity="center"
                         android:layout_alignParentBottom="true"

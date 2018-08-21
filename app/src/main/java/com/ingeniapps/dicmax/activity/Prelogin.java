@@ -89,7 +89,9 @@ public class Prelogin extends AppCompatActivity
         {
             public void onClick(View v)
             {
-                Intent intent = new Intent(Prelogin.this, Inicio.class);
+                Intent intent = new Intent(Prelogin.this, BuscarCiudad.class);
+                intent.putExtra("invitado",true);
+                gestionSharedPreferences.clear();
                 startActivity(intent);
                 finish();
             }

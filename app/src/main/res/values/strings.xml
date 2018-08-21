@@ -11,4 +11,6 @@
     <string name="library_name">MaterialBarcodeScanner</string>
     <string name="permission_camera_rationale">Para escanear, aprueba permiso de acceso a tu cámara.</string>
     <string name="no_camera_permission">No se puede iniciar el escáner, debes aprobar los permisos de tu cámara.</string>
+    <string name="title_activity_maps">Map</string>
+
 </resources>

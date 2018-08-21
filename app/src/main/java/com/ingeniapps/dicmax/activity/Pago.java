@@ -6,7 +6,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +34,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ingeniapps.dicmax.R;
+import com.ingeniapps.dicmax.fragment.Cuenta;
 import com.ingeniapps.dicmax.sharedPreferences.gestionSharedPreferences;
 import com.ingeniapps.dicmax.vars.vars;
 import com.ingeniapps.dicmax.volley.ControllerSingleton;
@@ -50,6 +53,8 @@ public class Pago extends AppCompatActivity
     TextView editTextNomEmpresa;
     TextView editTextReferenciaPago;
     TextView editTextValorPago;
+    TextInputLayout input_layout_editTextNombreContacto;
+    TextInputLayout input_layout_editTextNombreCvvvontacto;
     vars vars;
 
     EditText editTextCedulaPago;
@@ -63,6 +68,8 @@ public class Pago extends AppCompatActivity
 
     String codEmpresa, nomEmpresa, refPago, valPago, numTransaccion;
     gestionSharedPreferences gestionSharedPreferences;
+    private Typeface copperplateGothicLight;
+
 
 
     @Override
@@ -70,6 +77,9 @@ public class Pago extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pago);
+
+        copperplateGothicLight = Typeface.createFromAsset(Pago.this.getAssets(), "fonts/AvenirLTStd-Light.ttf");
+
 
         context=this;
 
@@ -126,6 +136,16 @@ public class Pago extends AppCompatActivity
         }
 
 
+        input_layout_editTextNombreContacto=(TextInputLayout) findViewById(R.id.input_layout_editTextNombreContacto);
+        input_layout_editTextNombreCvvvontacto=(TextInputLayout) findViewById(R.id.input_layout_editTextNombreCvvvontacto);
+        input_layout_editTextNombreContacto.setTypeface(copperplateGothicLight);
+        input_layout_editTextNombreCvvvontacto.setTypeface(copperplateGothicLight);
+
+
+
+
+
+
         editTextNomEmpresa=(TextView)findViewById(R.id.editTextNomEmpresa);
         editTextNomEmpresa.setText(""+nomEmpresa);
         editTextReferenciaPago=(TextView)findViewById(R.id.editTextReferenciaPago);
@@ -137,16 +157,25 @@ public class Pago extends AppCompatActivity
         editTextCedulaPago.setText(TextUtils.isEmpty(gestionSharedPreferences.getString("cedulaPago"))?null:gestionSharedPreferences.getString("cedulaPago"));
         editTextClavePago=(EditText)findViewById(R.id.editTextClavePago);
 
+        editTextCedulaPago.setTypeface(copperplateGothicLight);
+        editTextClavePago.setTypeface(copperplateGothicLight);
+
+
 
 
         botonConfirmarPago=(Button) findViewById(R.id.botonConfirmarPago);
         botonConfirmarPagoDisable=(Button) findViewById(R.id.botonConfirmarPagoDisable);
+        botonConfirmarPago.setTypeface(copperplateGothicLight);
+        botonConfirmarPagoDisable.setTypeface(copperplateGothicLight);
+
         botonConfirmarPago.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 gestionSharedPreferences.putString("cedulaPago",""+editTextCedulaPago.getText().toString());
+                botonConfirmarPago.setVisibility(View.GONE);
+                botonConfirmarPagoDisable.setVisibility(View.VISIBLE);
                 WebServiceValidarPago(editTextCedulaPago.getText().toString(),editTextClavePago.getText().toString(),numTransaccion);
             }
         });
@@ -240,9 +269,10 @@ public class Pago extends AppCompatActivity
                         try
                         {
                             String message=response.getString("message");
+                            boolean status=response.getBoolean("status");
                             requireDetailPay=response.getBoolean("requireDetailPay");
 
-                            if(requireDetailPay)//MUESTRA PANTALLA FORMA DE PAGO
+                            /*if(requireDetailPay)//MUESTRA PANTALLA FORMA DE PAGO
                             {
                                 if (!((Activity) context).isFinishing())
                                 {
@@ -259,33 +289,54 @@ public class Pago extends AppCompatActivity
                                 i.putExtra("clave",""+clave);
                                 startActivity(i);
                                 finish();
-                            }
-                            else//FORMA DE PAGO NORMAL
+                            }*/
+                            if(!status)
                             {
-                                    if (!((Activity) context).isFinishing())
+                                if (!((Activity) context).isFinishing())
+                                {
+                                    if(progressDialog.isShowing())
                                     {
-                                        if(progressDialog.isShowing())
-                                        {
-                                            progressDialog.dismiss();
-                                        }
+                                        progressDialog.dismiss();
                                     }
-
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Pago.this,R.style.AlertDialogTheme));
-                                    builder
-                                            .setTitle("Kupi")
-                                            .setMessage(""+message)
-                                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int id)
-                                                {
-                                                    Pago.this.finish();
-                                                }
-                                            }).setCancelable(false).show();
-
-
                                 }
 
+                                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Pago.this,R.style.AlertDialogTheme));
+                                builder
+                                        .setTitle("Kupi")
+                                        .setMessage(""+message)
+                                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int id)
+                                            {
+                                                botonConfirmarPago.setVisibility(View.VISIBLE);
+                                                botonConfirmarPagoDisable.setVisibility(View.GONE);
+                                            }
+                                        }).setCancelable(false).show();
+                            }
+                            else
+                            {
+                                if (!((Activity) context).isFinishing())
+                                {
+                                    if(progressDialog.isShowing())
+                                    {
+                                        progressDialog.dismiss();
+                                    }
+                                }
 
+                                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Pago.this,R.style.AlertDialogTheme));
+                                builder
+                                        .setTitle("Kupi")
+                                        .setMessage(""+message)
+                                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int id)
+                                            {
+                                                Pago.this.finish();
+                                            }
+                                        }).setCancelable(false).show();
+
+
+                            }
                         }
                         catch (JSONException e)
                         {
@@ -297,6 +348,9 @@ public class Pago extends AppCompatActivity
                                 }
                             }
 
+                            botonConfirmarPago.setVisibility(View.VISIBLE);
+                            botonConfirmarPagoDisable.setVisibility(View.GONE);
+
                             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Pago.this,R.style.AlertDialogTheme));
                             builder
                                     .setMessage(e.getMessage().toString())
@@ -304,6 +358,7 @@ public class Pago extends AppCompatActivity
                                         @Override
                                         public void onClick(DialogInterface dialog, int id)
                                         {
+
                                         }
                                     }).show();
 
@@ -318,6 +373,9 @@ public class Pago extends AppCompatActivity
                     {
                         if (error instanceof TimeoutError)
                         {
+
+                            botonConfirmarPago.setVisibility(View.VISIBLE);
+                            botonConfirmarPagoDisable.setVisibility(View.GONE);
 
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Pago.this,R.style.AlertDialogTheme));
@@ -337,6 +395,9 @@ public class Pago extends AppCompatActivity
                         if (error instanceof NoConnectionError)
                         {
 
+                            botonConfirmarPago.setVisibility(View.VISIBLE);
+                            botonConfirmarPagoDisable.setVisibility(View.GONE);
+
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Pago.this,R.style.AlertDialogTheme));
                             builder
@@ -354,6 +415,9 @@ public class Pago extends AppCompatActivity
 
                         if (error instanceof AuthFailureError)
                         {
+
+                            botonConfirmarPago.setVisibility(View.VISIBLE);
+                            botonConfirmarPagoDisable.setVisibility(View.GONE);
 
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Pago.this,R.style.AlertDialogTheme));
@@ -373,6 +437,9 @@ public class Pago extends AppCompatActivity
                         if (error instanceof ServerError)
                         {
 
+                            botonConfirmarPago.setVisibility(View.VISIBLE);
+                            botonConfirmarPagoDisable.setVisibility(View.GONE);
+
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Pago.this,R.style.AlertDialogTheme));
                             builder
@@ -391,6 +458,9 @@ public class Pago extends AppCompatActivity
                         if (error instanceof NetworkError)
                         {
 
+                            botonConfirmarPago.setVisibility(View.VISIBLE);
+                            botonConfirmarPagoDisable.setVisibility(View.GONE);
+
                             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Pago.this,R.style.AlertDialogTheme));
                             builder
                                     .setMessage("Error de red, contacte a su proveedor de servicios.")
@@ -407,6 +477,9 @@ public class Pago extends AppCompatActivity
 
                         if (error instanceof ParseError)
                         {
+
+                            botonConfirmarPago.setVisibility(View.VISIBLE);
+                            botonConfirmarPagoDisable.setVisibility(View.GONE);
 
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Pago.this,R.style.AlertDialogTheme));

@@ -27,6 +27,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -97,8 +99,7 @@ public class Inicio extends AppCompatActivity
     private ProgressDialog progressDialog;
     gestionSharedPreferences gestionSharedPreferences;
     private Boolean guardarSesion;
-
-
+    private String idCiudad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -107,10 +108,11 @@ public class Inicio extends AppCompatActivity
         setContentView(R.layout.activity_inicio);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         gestionSharedPreferences=new gestionSharedPreferences(this);
         guardarSesion=gestionSharedPreferences.getBoolean("GuardarSesion");
-
-
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
@@ -135,20 +137,63 @@ public class Inicio extends AppCompatActivity
             }
         }
 
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
+        if (savedInstanceState == null)
+        {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null)
+            {
+                idCiudad = null;
+            }
+            else
+            {
+                idCiudad = extras.getString("codCiudad");
+            }
+        }
 
+        //Toast.makeText(Inicio.this,"codCiudad: "+idCiudad,Toast.LENGTH_LONG).show();
 
-
-    /*    toolbar.setNavigationIcon(R.drawable.ic_qr_code);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationIcon(R.drawable.ic_signout);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view)
             {
 
-                startScan();
+                if (guardarSesion==false)
+                {
+                    gestionSharedPreferences.clear();
+                    Intent i=new Intent(Inicio.this, Login.class);
+                    startActivity(i);
+                    finish();
+                }
+                else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(new android.support.v7.view.ContextThemeWrapper(Inicio.this, R.style.AlertDialogTheme));
+                    builder
+                            .setTitle("Kupi")
+                            .setMessage("¿Deseas cerrar sesión?")
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    gestionSharedPreferences.clear();
+                                    Intent i=new Intent(Inicio.this, Login.class);
+                                    startActivity(i);
+                                    finish();
+
+                                }
+                            }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+
+                        }
+                    }).show();
+                }
             }
-        });*/
+        });
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
@@ -177,14 +222,14 @@ public class Inicio extends AppCompatActivity
                            case R.id.action_comercios:
                                 fragmentClass = Categorias.class;
                                 break;
-                            case R.id.action_pagos:
+                            case R.id.action_contacto:
                                 if (guardarSesion==false)
                                 {
                                     cargarLogin();
                                 }
                                 else
                                 {
-                                    fragmentClass = Compromisos.class;
+                                    fragmentClass = Contacto.class;
                                     break;
                                 }
                             case R.id.action_historial:
@@ -321,9 +366,10 @@ public class Inicio extends AppCompatActivity
 
     public void cargarLogin()
     {
-        Intent intent = new Intent(Inicio.this, Login.class);
+        Intent intent = new Intent(Inicio.this, Login.class);//CERRAMOS LAS ACTIVIDADES TODAS ANTERIORES CREADAS
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        Inicio.this.finish();
+        finish();
     }
 
     @Override
@@ -331,26 +377,38 @@ public class Inicio extends AppCompatActivity
     {
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
-            AlertDialog.Builder builder = new AlertDialog.Builder(new android.support.v7.view.ContextThemeWrapper(this, R.style.AlertDialogTheme));
-            builder
-                    .setTitle("Kupi")
-                    .setMessage("¿Deseas salir de la aplicación?")
-                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id)
-                        {
-                           finish();
 
-                        }
-                    }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener()
+            if (guardarSesion==false)
             {
-                @Override
-                public void onClick(DialogInterface dialog, int id)
-                {
+                gestionSharedPreferences.clear();
+                Intent i=new Intent(Inicio.this, Login.class);
+                i.putExtra("tipoIngreso","invitado");
+                startActivity(i);
+                finish();
+            }
+            else
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(new android.support.v7.view.ContextThemeWrapper(this, R.style.AlertDialogTheme));
+                builder
+                        .setTitle("Kupi")
+                        .setMessage("¿Deseas salir de la aplicación?")
+                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                finish();
 
-                }
-            }).show();
+                            }
+                        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+
+                    }
+                }).show();
+            }
         }
 
         return false;
@@ -371,6 +429,37 @@ public class Inicio extends AppCompatActivity
     {
         super.onResume();
         updateTokenFCMToServer();
+
+        //SI LA PERSONA ACTUALIZA EL APP PERO NO SE DESLOGUEA, LE DECIMOS QUE ESCOJA SU CIUDAD DE USO
+        if(TextUtils.isEmpty(gestionSharedPreferences.getString("codCiudad")) || TextUtils.isEmpty(gestionSharedPreferences.getString("nomCiudad")))
+        {
+
+            if (!((Activity) context).isFinishing())
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Inicio.this,R.style.AlertDialogTheme));
+                builder
+                        .setTitle("Hola,").setMessage("Debes escoger una ciudad para disfrutar de las mejores marcas y ofertas.")
+                        .setPositiveButton("¡Vamos a hacerlo!", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                Intent intent = new Intent(Inicio.this, BuscarCiudad.class);
+                                intent.putExtra("invitado",false);
+                                intent.putExtra("isUpdateApp",true);
+                                //gestionSharedPreferences.clear();
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).setCancelable(false).show();
+            }
+
+
+        }
+
+
+
+        //Toast.makeText(Inicio.this,"codCiudad: "+gestionSharedPreferences.getString("codCiudad"),Toast.LENGTH_LONG).show();
+        //Toast.makeText(Inicio.this,"nomCiudad: "+gestionSharedPreferences.getString("nomCiudad"),Toast.LENGTH_LONG).show();
 
        /* if(!notificaUpdate)
         {
@@ -681,8 +770,5 @@ public class Inicio extends AppCompatActivity
         ControllerSingleton.getInstance().addToReqQueue(jsonObjReq, "getDatosPago");
         jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(20000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
-
-
 
 }

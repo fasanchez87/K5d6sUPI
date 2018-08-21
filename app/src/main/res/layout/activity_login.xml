@@ -67,8 +67,8 @@
                         android:layout_height="wrap_content"
                         android:windowSoftInputMode="stateHidden"
                         android:backgroundTint="@color/colorBlanco"
-                        android:hint="Usuario"
-                        android:inputType="text"
+                        android:hint="Cédula"
+                        android:inputType="number"
                         android:textColor="@color/colorBlanco"
                         android:textColorHint="@color/colorBlanco" />
                 </android.support.design.widget.TextInputLayout>

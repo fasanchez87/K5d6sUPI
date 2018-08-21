@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlanco"
                     android:textColor="@color/colorBlanco"
-                    android:layout_marginTop="0dp"
+                    android:layout_marginTop="15dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textColorHint="@color/colorBlanco">
@@ -203,6 +203,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:layout_marginLeft="7dp"
                         android:text="Acepto términos y condiciones"
                         android:textColor="@color/colorBlanco"
                         android:textColorLink="@color/colorBlanco" />

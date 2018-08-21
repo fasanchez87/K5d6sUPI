@@ -5,11 +5,15 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -32,6 +36,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ingeniapps.dicmax.R;
+import com.ingeniapps.dicmax.activity.CambioClave;
 import com.ingeniapps.dicmax.vars.vars;
 import com.ingeniapps.dicmax.volley.ControllerSingleton;
 
@@ -46,9 +51,16 @@ public class Contacto extends Fragment
 {
 
     EditText editTextNombreContacto,editTextEmailContacto,editTextCelularContacto,editTextMensajeContacto;
+    TextInputLayout input_layout_editTextNombreContacto;
+    TextInputLayout input_layout_clave_editTextEmailContacto;
+    TextInputLayout input_layout_clave_editTextCelularContacto;
+    TextInputLayout input_layout_editTextMensajeContacto;
     vars vars;
     private ProgressDialog progressDialog;
     private Context context;
+    private Typeface copperplateGothicLight;
+    private MenuItem menuItem;
+
 
 
     @Override
@@ -64,10 +76,42 @@ public class Contacto extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        copperplateGothicLight = Typeface.createFromAsset(Contacto.this.getActivity().getAssets(), "fonts/AvenirLTStd-Light.ttf");
         editTextNombreContacto=(EditText)getActivity().findViewById(R.id.editTextNombreContacto);
+        input_layout_editTextNombreContacto=(TextInputLayout) getActivity().findViewById(R.id.input_layout_editTextNombreContacto);
+
+        input_layout_editTextNombreContacto.setTypeface(copperplateGothicLight);
+        editTextNombreContacto.setTypeface(copperplateGothicLight);
+        editTextNombreContacto.addTextChangedListener(new Contacto.GenericTextWatcher(editTextNombreContacto));
+
+
+
+
         editTextEmailContacto=(EditText)getActivity().findViewById(R.id.editTextEmailContacto);
+        input_layout_clave_editTextEmailContacto=(TextInputLayout) getActivity().findViewById(R.id.input_layout_clave_editTextEmailContacto);
+        input_layout_clave_editTextEmailContacto.setTypeface(copperplateGothicLight);
+        editTextEmailContacto.setTypeface(copperplateGothicLight);
+        editTextEmailContacto.addTextChangedListener(new Contacto.GenericTextWatcher(editTextEmailContacto));
+
+
+
+
+
         editTextCelularContacto=(EditText)getActivity().findViewById(R.id.editTextCelularContacto);
+        input_layout_clave_editTextCelularContacto=(TextInputLayout) getActivity().findViewById(R.id.input_layout_clave_editTextCelularContacto);
+        input_layout_clave_editTextCelularContacto.setTypeface(copperplateGothicLight);
+        editTextCelularContacto.setTypeface(copperplateGothicLight);
+        editTextCelularContacto.addTextChangedListener(new Contacto.GenericTextWatcher(editTextCelularContacto));
+
+
+
         editTextMensajeContacto=(EditText)getActivity().findViewById(R.id.editTextMensajeContacto);
+        input_layout_editTextMensajeContacto=(TextInputLayout) getActivity().findViewById(R.id.input_layout_editTextMensajeContacto);
+        input_layout_editTextMensajeContacto.setTypeface(copperplateGothicLight);
+        editTextMensajeContacto.setTypeface(copperplateGothicLight);
+        editTextMensajeContacto.addTextChangedListener(new Contacto.GenericTextWatcher(editTextMensajeContacto));
+
+
 
     }
 
@@ -78,10 +122,17 @@ public class Contacto extends Fragment
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_contacto, container, false);
     }
+
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_contacto, menu);  // Use filter.xml from step 1
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_contacto, menu);
+         menuItem=menu.findItem(R.id.menu_enviar_contacto);
     }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -155,7 +206,7 @@ public class Contacto extends Fragment
 
         progressDialog = new ProgressDialog(new ContextThemeWrapper(Contacto.this.getActivity(),R.style.AppCompatAlertDialogStyle));
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Enviando mensaje...");
+        progressDialog.setMessage("Un momento...");
         progressDialog.show();
         progressDialog.setCancelable(false);
 
@@ -383,6 +434,57 @@ public class Contacto extends Fragment
 
         ControllerSingleton.getInstance().addToReqQueue(jsonObjReq, "getContacto");
         jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(20000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    private class GenericTextWatcher implements TextWatcher
+    {
+        private View view;
+
+        private GenericTextWatcher(View view)
+        {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+        public void afterTextChanged(Editable editable)
+        {
+            if(TextUtils.isEmpty(editTextNombreContacto.getText().toString()))
+            {
+                menuItem.setEnabled(false);
+                return;
+            }
+
+            if(TextUtils.isEmpty(editTextEmailContacto.getText().toString()))
+            {
+                menuItem.setEnabled(false);
+                return;
+            }
+
+
+
+            if(TextUtils.isEmpty(editTextCelularContacto.getText().toString()))
+            {
+                menuItem.setEnabled(false);
+                return;
+            }
+
+            if(TextUtils.isEmpty(editTextMensajeContacto.getText().toString()))
+            {
+                menuItem.setEnabled(false);
+                return;
+            }
+
+            if(!isValidEmail(editTextEmailContacto.getText().toString()))
+            {
+                menuItem.setEnabled(false);
+                return;
+            }
+
+            menuItem.setEnabled(true);
+        }
     }
 
 

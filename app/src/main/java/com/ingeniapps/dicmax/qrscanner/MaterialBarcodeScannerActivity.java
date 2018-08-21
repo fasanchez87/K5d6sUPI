@@ -17,6 +17,7 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.ingeniapps.dicmax.R;
+import com.ingeniapps.dicmax.Text.FontStylerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -71,7 +72,7 @@ public class MaterialBarcodeScannerActivity extends AppCompatActivity {
     }
 
     private void setupLayout() {
-        final TextView topTextView = (TextView) findViewById(R.id.topText);
+        final FontStylerView topTextView = (FontStylerView) findViewById(R.id.topText);
         assertNotNull(topTextView);
         String topText = mMaterialBarcodeScannerBuilder.getText();
         if(!mMaterialBarcodeScannerBuilder.getText().equals("")){
@@ -154,7 +155,7 @@ public class MaterialBarcodeScannerActivity extends AppCompatActivity {
                         public void run() {
                             finish();
                         }
-                    },50);
+                    },0);
                 }
             }
         };

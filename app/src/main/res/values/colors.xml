@@ -16,6 +16,8 @@
     <color name="colorRegistroCampos">#858585 </color>
     <color name="white_trans">#99FFFFFF</color>
     <color name="timestamp">#a0a3a7</color>
+    <color name="timestamp2">#c7c7c7</color>
+    <color name="screen">#f2f2f2</color>
     <color name="link">#0a80d1</color>
     <color name="colorEditTextGris">#848484</color>
     <color name="colorCatNotificacionRojo">#d87b86</color>
