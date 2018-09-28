@@ -63,6 +63,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ingeniapps.dicmax.activity.Inicio;
+import com.ingeniapps.dicmax.activity.ListadoPush;
 import com.ingeniapps.dicmax.activity.Login;
 import com.ingeniapps.dicmax.activity.Pago;
 import com.ingeniapps.dicmax.activity.ValidarUsuario;
@@ -129,11 +130,13 @@ public class Home extends Fragment implements BaseSliderView.OnSliderClickListen
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.action_contacto:
-                // Not implemented here
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.menu_ver_push:
+                 Intent i=new Intent(Home.this.getActivity(), ListadoPush.class);
+                 startActivity(i);
             default:
                 break;
         }

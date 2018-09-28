@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <ImageView
+                android:id="@android:id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:focusable="false"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_logo_bar_kupi" />
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollDetallePush"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar_principal"
+        android:fillViewport="true"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imagenPushDetalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"/>
+            </FrameLayout>
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/tvTituloPushDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sale Trek Marlin 5"
+                android:textSize="17sp"
+                android:paddingLeft="20dp"
+                app:fontName="AvenirLTStd-Black"
+                android:textColor="@color/colorNegro"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"
+                android:textStyle="bold" />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/tvMensajePushDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:fontName="AvenirLTStd-Light"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="Descuento en bicicletas Trek Marlin 5 - Ahora 949.000 - Antes 1.100.000 - y llévate Casco y Badana"
+                android:textSize="16sp" />
+
+            <com.ingeniapps.dicmax.Text.FontStylerView
+                android:id="@+id/fecExpiraPushDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Oferta expira 2 días"
+                app:fontName="AvenirLTStd-Black"
+                android:textSize="14sp"
+                android:textColor="@color/text_shadow"
+                android:textStyle="bold"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="7dp"
+                android:paddingTop="2dp"/>
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

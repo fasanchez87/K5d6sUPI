@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingBottom="1dp"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:paddingTop="5dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardViewCompra"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        card_view:cardElevation="4dp"
+        card_view:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="9dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="9dp">
+
+                <com.ingeniapps.dicmax.Text.FontStylerView
+                    android:id="@+id/tvTituloPush"
+                    android:layout_width="wrap_content"
+                    app:fontName="AvenirLTStd-Black"
+                    android:layout_height="wrap_content"
+                    android:text="Jhonson and Jhonson"
+                    android:textColor="@color/colorNegro"
+                    android:textSize="15sp"
+                    android:paddingBottom="3dp"
+                    android:textStyle="bold" />
+
+                <com.ingeniapps.dicmax.Text.FontStylerView
+                    android:id="@+id/tvMensajePush"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fontName="AvenirLTStd-Light"
+                    android:gravity="left"
+                    android:paddingBottom="1dp"
+                    android:text="Solicitadobbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddddddddddddddddddddddddddddddddddddddddddddd: "
+                    android:textSize="14sp" />
+
+                <com.ingeniapps.dicmax.Text.FontStylerView
+                    android:id="@+id/tvFechaMensajePush"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fontName="AvenirLTStd-Black"
+                    android:text="Hace 2 minutos"
+                    android:textColor="@color/text_shadow"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#CCCCCC" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

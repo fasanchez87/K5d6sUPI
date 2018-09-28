@@ -10,7 +10,6 @@
     </style>
 
 
-
     <style name="CustomActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:windowActionBarOverlay">true</item>
         <!-- Support library compatibility -->
@@ -79,7 +78,6 @@
     </style>
 
 
-
     <style name="EditTextFondoBlanco" parent="Base.Theme.AppCompat">
         <item name="colorAccent">@color/colorEditTextGris</item>
         <item name="colorControlActivated">@color/colorEditTextGris</item>
@@ -123,8 +121,6 @@
         <item name="android:textColorPrimary">@color/colorPrimary</item>
 
     </style>
-
-
 
 
     <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
@@ -358,6 +354,80 @@
         <item name="android:textColorSecondary">@color/colorBlanco</item>
     </style>
 
+    <!-- ENTER -->
+    <style name="EnterFromBottomAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_bottom</item>
+    </style>
+
+    <style name="EnterFromTopAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_top</item>
+    </style>
+
+    <style name="EnterFromLeftAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_left</item>
+    </style>
+
+    <style name="EnterFromRightAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_right</item>
+    </style>
+
+    <!-- EXIT -->
+    <style name="ExitToBottomAnimation">
+        <item name="android:windowExitAnimation">@anim/exit_to_bottom</item>
+    </style>
+
+    <style name="ExitToTopAnimation">
+        <item name="android:windowExitAnimation">@anim/exit_to_top</item>
+    </style>
+
+    <style name="ExitToLeftAnimation">
+        <item name="android:windowExitAnimation">@anim/exit_to_left</item>
+    </style>
+
+    <style name="ExitToRightAnimation">
+        <item name="android:windowExitAnimation">@anim/exit_to_right</item>
+    </style>
+
+    <!-- ENTER - EXIT -->
+    <style name="BottomBottomAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/exit_to_bottom</item>
+    </style>
+
+    <style name="TopTopAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_top</item>
+        <item name="android:windowExitAnimation">@anim/exit_to_top</item>
+    </style>
+
+    <style name="LeftLeftAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_left</item>
+        <item name="android:windowExitAnimation">@anim/exit_to_left</item>
+    </style>
+
+    <style name="RightRightAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_right</item>
+        <item name="android:windowExitAnimation">@anim/exit_to_right</item>
+    </style>
+
+    <style name="BottomTopAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/exit_to_top</item>
+    </style>
+
+    <style name="TopBottomAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_top</item>
+        <item name="android:windowExitAnimation">@anim/exit_to_bottom</item>
+    </style>
+
+    <style name="LeftRightAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_left</item>
+        <item name="android:windowExitAnimation">@anim/exit_to_right</item>
+    </style>
+
+    <style name="RightLeftAnimation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_right</item>
+        <item name="android:windowExitAnimation">@anim/exit_to_left</item>
+    </style>
 
 
 </resources>

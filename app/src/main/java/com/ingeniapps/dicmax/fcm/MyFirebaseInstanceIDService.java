@@ -42,15 +42,13 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService
      * is initially generated so this is where you would retrieve the token.
      */
     // [START refresh_token]
-    private String idDevice;
     @Override
     public void onTokenRefresh()
     {
         super.onTokenRefresh();
-        idDevice= Settings.Secure.getString(this.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+
         var = new vars();
-        sharedPreferences = new gestionSharedPreferences(this);
+        sharedPreferences = new gestionSharedPreferences(MyFirebaseInstanceIDService.this.getApplicationContext());
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         storeRegIdInPref(refreshedToken);
         sharedPreferences.putString("tokenFCM",refreshedToken);
@@ -116,14 +114,15 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json; charset=utf-8");
                 headers.put("WWW-Authenticate", "xBasic realm=".concat(""));
-                headers.put("ideCelular",""+idDevice);
+                headers.put("numDocumento",""+sharedPreferences.getString("numDocumento"));
                 headers.put("fcmToken",""+refreshedToken);
                 headers.put("codSistema", "1");
+                headers.put("versionApp", ""+sharedPreferences.getString("versionApp"));
                 return headers;
             }
         };
 
-        ControllerSingleton.getInstance().addToReqQueue(jsonObjReq, "");
+        ControllerSingleton.getInstance().addToReqQueue(jsonObjReq, "InstanceFCM");
         jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(20000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
@@ -133,5 +132,12 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("regId", token);
         editor.commit();
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        ControllerSingleton.getInstance().cancelPendingReq("InstanceFCM");
     }
 }

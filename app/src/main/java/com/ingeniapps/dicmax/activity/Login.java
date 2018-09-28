@@ -42,6 +42,9 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.ingeniapps.dicmax.R;
 import com.ingeniapps.dicmax.Text.FontStylerView;
+import com.ingeniapps.dicmax.finger.callback.FingerprintCallback;
+import com.ingeniapps.dicmax.finger.callback.FingerprintDialogCallback;
+import com.ingeniapps.dicmax.finger.dialog.FingerprintDialog;
 import com.ingeniapps.dicmax.helper.AlertasErrores;
 import com.ingeniapps.dicmax.loader.SpinKitView;
 import com.ingeniapps.dicmax.loader.SpriteFactory;
@@ -58,7 +61,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Login extends AppCompatActivity
+public class Login extends AppCompatActivity implements FingerprintDialogCallback
 {
 
     vars vars;
@@ -70,7 +73,7 @@ public class Login extends AppCompatActivity
     FontStylerView textViewOlvidoClave;
     EditText editTextClave;
     SpinKitView spinKitView;
-    LinearLayout linearLoading;
+    LinearLayout linearLoading,llHuellaLogin;
     private Typeface copperplateGothicLight;
     CoordinatorLayout coordinatorLayoutLogin;
     AlertasErrores alertarErrores;
@@ -80,6 +83,8 @@ public class Login extends AppCompatActivity
     private Context context;
     private String usuario, clave;
     private String tipoIngreso;
+    private ImageView imageFinderLogin;
+    private Boolean isHuella;
 
 
     @Override
@@ -87,6 +92,9 @@ public class Login extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+
 
         if (savedInstanceState == null)
         {
@@ -106,8 +114,10 @@ public class Login extends AppCompatActivity
 
 
         //Estilo tipo letra boton.
-        buttonIngresar=(Button)findViewById(R.id.buttonIngresar);
+        buttonIngresar=findViewById(R.id.buttonIngresar);
+        imageFinderLogin=findViewById(R.id.imageFinderLogin);
         linearLoading=(LinearLayout) findViewById(R.id.linearLoading);
+        llHuellaLogin= findViewById(R.id.llHuellaLogin);
         buttonIngresarDisable=(Button)findViewById(R.id.buttonIngresarDisable);
         copperplateGothicLight = Typeface.createFromAsset(getAssets(), "fonts/AvenirLTStd-Light.ttf");
         buttonIngresar.setTypeface(copperplateGothicLight);
@@ -115,6 +125,7 @@ public class Login extends AppCompatActivity
         context=this;
 
         gestionSharedPreferences=new gestionSharedPreferences(this);
+
 
         vars=new vars();
 
@@ -143,6 +154,80 @@ public class Login extends AppCompatActivity
         editTextClave.addTextChangedListener(new GenericTextWatcher(editTextClave));
         input_layout_clave.setTypeface(copperplateGothicLight);
         editTextClave.setTypeface(copperplateGothicLight);
+
+        //SI TIENE HUELLA REGISTRADA DEJAMOS LO DEJAMOS PINTADO EN PANTALLA
+        if(gestionSharedPreferences.getBoolean("isHuella"))
+        {
+            editTextUsuario.setText(gestionSharedPreferences.getString("numDocumento"));
+        }
+
+
+        if(FingerprintDialog.isAvailable(Login.this))
+        {
+            llHuellaLogin.setVisibility(View.VISIBLE);
+        }
+
+        imageFinderLogin.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                if(FingerprintDialog.isAvailable(Login.this))
+                {
+                    if (!FingerprintDialog.isEnrollFinger(Login.this))
+                    {
+                        alertarErrores=new AlertasErrores("No se ha detectado una huella enrolada, por favor agregala en tu teléfono.", coordinatorLayoutLogin,Login.this);
+                        return;
+                    }
+
+                    FingerprintDialog.initialize(Login.this)
+                            .title(R.string.fingerprint_title)
+                            .message(R.string.fingerprint_message)
+                            .callback(new FingerprintDialogCallback()
+                            {
+                                @Override
+                                public void onAuthenticationSucceeded()
+                                {
+
+                                    if (!((Activity) context).isFinishing())
+                                    {
+                                        if(TextUtils.isEmpty(editTextUsuario.getText().toString()))
+                                        {
+                                            alertarErrores=new AlertasErrores("Digite su cédula por favor.", coordinatorLayoutLogin,Login.this);
+                                            return;
+                                        }
+
+                                        //Toast.makeText(context, "clave: "+gestionSharedPreferences.getString("clave"), Toast.LENGTH_SHORT).show();
+
+                                        if(!gestionSharedPreferences.getBoolean("isHuella"))
+                                        {
+                                            if(TextUtils.isEmpty(editTextClave.getText().toString()))
+                                            {
+                                                alertarErrores=new AlertasErrores("Digite su contraseña por favor.", coordinatorLayoutLogin,Login.this);
+                                                return;
+                                            }
+                                        }
+
+
+                                        //Toast.makeText(Login.this, "Ok", Toast.LENGTH_SHORT).show();
+                                        usuario=editTextUsuario.getText().toString();
+                                        clave=editTextClave.getText().toString();
+                                        //gestionSharedPreferences.putBoolean("isHuella",true);
+                                        WebServiceLogin(usuario,TextUtils.isEmpty(gestionSharedPreferences.getString("clave"))?clave:gestionSharedPreferences.getString("clave"));
+                                    }
+                                }
+                                @Override
+                                public void onAuthenticationCancel()
+                                {
+                                    //Toast.makeText(Login.this, "Fail", Toast.LENGTH_SHORT).show();
+                                }
+                            }).show();
+                }
+            }
+        });
+
+
+
+
 
         //Configuramos Loader
         spinKitView = (SpinKitView) findViewById(R.id.spin_kit_login);
@@ -199,6 +284,16 @@ public class Login extends AppCompatActivity
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public void onAuthenticationSucceeded() {
+        // Logic when fingerprint is recognized
+    }
+
+    @Override
+    public void onAuthenticationCancel() {
+        // Logic when user canceled operation
+    }
+
     private boolean checkPlayServices()
     {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
@@ -235,7 +330,6 @@ public class Login extends AppCompatActivity
         editTextClave.setEnabled(false);
         textViewOlvidoClave.setEnabled(false);
 
-
         JsonObjectRequest jsonObjReq=new JsonObjectRequest(Request.Method.GET, _urlWebService, null,
                 new Response.Listener<JSONObject>()
                 {
@@ -249,16 +343,26 @@ public class Login extends AppCompatActivity
 
                             if(status)
                             {
+                                gestionSharedPreferences.putBoolean("isHuella",true);
+
+
                                 //OBTENEMOS DATOS DEL USUARIO PARA GUARDAR SU SESION
-                                gestionSharedPreferences.putBoolean("GuardarSesion", true);
                                 gestionSharedPreferences.putString("codUsuario",""+response.getJSONObject("usuario").getString("codUsuario"));
+                                gestionSharedPreferences.putBoolean("GuardarSesion", true);
+                               /* //GUARDAMOS LA CLAVE EN CASO DE LA HUELLA GUARDADA
+                                if(gestionSharedPreferences.getBoolean("isHuella"))
+                                {
+                                    gestionSharedPreferences.putString("clave",""+editTextClave.getText().toString());
+                                }*/
 
                                 gestionSharedPreferences.putString("codCiudad",""+response.getJSONObject("usuario").getString("codCiudad"));//CIUDAD INICIAL DEL USUARIO
                                 gestionSharedPreferences.putString("nomCiudad",""+response.getJSONObject("usuario").getString("nomCiudad"));//CIUDAD INICIAL DEL USUARIO
-
                                 gestionSharedPreferences.putString("nomUsuario",""+response.getJSONObject("usuario").getString("nomUsuario"));
                                 gestionSharedPreferences.putString("apeUsuario",""+response.getJSONObject("usuario").getString("apeUsuario"));
+
                                 gestionSharedPreferences.putString("numDocumento",""+response.getJSONObject("usuario").getString("numDocumento"));
+                                gestionSharedPreferences.putString("clave",""+claveUsuario);
+
                                 gestionSharedPreferences.putString("emaUsuario",""+response.getJSONObject("usuario").getString("emaUsuario"));
                                 gestionSharedPreferences.putString("urlImagen",""+response.getJSONObject("usuario").getString("urlImagen"));//Imagen Usuario
                                 gestionSharedPreferences.putString("telUsuario",""+response.getJSONObject("usuario").getString("telUsuario"));//Imagen Usuario*/
@@ -267,6 +371,8 @@ public class Login extends AppCompatActivity
                                 {
                                     Intent intent=new Intent(Login.this,Inicio.class);
                                     intent.putExtra("codCiudad",response.getJSONObject("usuario").getString("codCiudad"));
+                                    intent.putExtra("numDocumento",editTextUsuario.getText().toString());
+                                    intent.putExtra("claveUsuario",TextUtils.isEmpty(editTextClave.getText().toString())?gestionSharedPreferences.getString("clave"):editTextClave.getText().toString());
                                     startActivity(intent);
                                     finish();
                                     return;
@@ -373,6 +479,8 @@ public class Login extends AppCompatActivity
         ControllerSingleton.getInstance().addToReqQueue(jsonObjReq, "login");
         jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(20000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
+
+
 
     private class GenericTextWatcher implements TextWatcher
     {

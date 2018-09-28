@@ -6,9 +6,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-feature android:name="android.hardware.camera" />
-
     <uses-permission android:name="android.permission.CAMERA" />
 
     <!--
@@ -17,6 +16,10 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
     <application
         android:name=".volley.ControllerSingleton"
@@ -154,8 +157,17 @@
             android:name=".activity.RecargasElectronicas"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.OperadoresRecargas"
+        <activity
+            android:name=".activity.OperadoresRecargas"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ListadoPush"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.DetallePush"
+            android:label="@string/title_activity_detalle_push"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

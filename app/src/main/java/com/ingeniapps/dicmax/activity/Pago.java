@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +22,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -34,7 +39,10 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ingeniapps.dicmax.R;
+import com.ingeniapps.dicmax.finger.callback.FingerprintDialogCallback;
+import com.ingeniapps.dicmax.finger.dialog.FingerprintDialog;
 import com.ingeniapps.dicmax.fragment.Cuenta;
+import com.ingeniapps.dicmax.helper.AlertasErrores;
 import com.ingeniapps.dicmax.sharedPreferences.gestionSharedPreferences;
 import com.ingeniapps.dicmax.vars.vars;
 import com.ingeniapps.dicmax.volley.ControllerSingleton;
@@ -61,15 +69,20 @@ public class Pago extends AppCompatActivity
     EditText editTextClavePago;
     private Context context;
 
+    private ImageView imageFinderPago;
+
     Button botonConfirmarPago;
     Button botonConfirmarPagoDisable;
     private NumberFormat numberFormat;
     private ProgressDialog progressDialog;
+    private LinearLayout llHuellaPago;
 
-    String codEmpresa, nomEmpresa, refPago, valPago, numTransaccion;
+    String codEmpresa, nomEmpresa, refPago, valPago, numTransaccion, numDocumento, clave;
     gestionSharedPreferences gestionSharedPreferences;
     private Typeface copperplateGothicLight;
-
+    private boolean isHuella;
+    AlertasErrores alertarErrores;
+    NestedScrollView coordinatorLayoutPago;
 
 
     @Override
@@ -80,10 +93,17 @@ public class Pago extends AppCompatActivity
 
         copperplateGothicLight = Typeface.createFromAsset(Pago.this.getAssets(), "fonts/AvenirLTStd-Light.ttf");
 
+        coordinatorLayoutPago=findViewById(R.id.coordinatorLayoutPago);
+
+
 
         context=this;
 
         vars=new vars();
+
+        imageFinderPago=findViewById(R.id.imageFinderPago);
+        llHuellaPago=findViewById(R.id.llHuellaPago);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -123,6 +143,8 @@ public class Pago extends AppCompatActivity
                 valPago=null;
                 codEmpresa=null;
                 numTransaccion=null;
+                numDocumento=null;
+                clave=null;
             }
 
             else
@@ -132,6 +154,9 @@ public class Pago extends AppCompatActivity
                 valPago=extras.getString("valPago");
                 codEmpresa=extras.getString("codEmpresa");
                 numTransaccion=extras.getString("numTransaccion");
+
+                numDocumento=extras.getString("numDocumento");
+                clave=extras.getString("clave");
             }
         }
 
@@ -140,10 +165,6 @@ public class Pago extends AppCompatActivity
         input_layout_editTextNombreCvvvontacto=(TextInputLayout) findViewById(R.id.input_layout_editTextNombreCvvvontacto);
         input_layout_editTextNombreContacto.setTypeface(copperplateGothicLight);
         input_layout_editTextNombreCvvvontacto.setTypeface(copperplateGothicLight);
-
-
-
-
 
 
         editTextNomEmpresa=(TextView)findViewById(R.id.editTextNomEmpresa);
@@ -160,13 +181,16 @@ public class Pago extends AppCompatActivity
         editTextCedulaPago.setTypeface(copperplateGothicLight);
         editTextClavePago.setTypeface(copperplateGothicLight);
 
-
-
-
         botonConfirmarPago=(Button) findViewById(R.id.botonConfirmarPago);
         botonConfirmarPagoDisable=(Button) findViewById(R.id.botonConfirmarPagoDisable);
         botonConfirmarPago.setTypeface(copperplateGothicLight);
         botonConfirmarPagoDisable.setTypeface(copperplateGothicLight);
+
+
+
+
+
+
 
         botonConfirmarPago.setOnClickListener(new View.OnClickListener()
         {
@@ -187,15 +211,62 @@ public class Pago extends AppCompatActivity
         // run once to disable if empty
         checkFieldsForEmptyValues();
 
+        if(gestionSharedPreferences.getBoolean("isHuella"))
+        {
+            if(FingerprintDialog.isAvailable(Pago.this))
+            {
+                llHuellaPago.setVisibility(View.VISIBLE);
+            }
 
+        }
 
+        imageFinderPago.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                if(FingerprintDialog.isAvailable(Pago.this))
+                {
+                     FingerprintDialog.initialize(Pago.this)
+                            .title(R.string.fingerprint_title)
+                            .message(R.string.fingerprint_message)
+                            .callback(new FingerprintDialogCallback()
+                            {
+                                @Override
+                                public void onAuthenticationSucceeded()
+                                {
+                                    if (!((Activity) context).isFinishing())
+                                    {
+                                        if(TextUtils.isEmpty(editTextCedulaPago.getText().toString()))
+                                        {
+                                            alertarErrores=new AlertasErrores("Digite su cédula por favor.", coordinatorLayoutPago,Pago.this);
+                                            return;
+                                        }
 
+                                        if(!gestionSharedPreferences.getBoolean("isHuella"))
+                                        {
+                                            if(TextUtils.isEmpty(editTextClavePago.getText().toString()))
+                                            {
+                                                alertarErrores=new AlertasErrores("Digite su contraseña por favor.", coordinatorLayoutPago,Pago.this);
+                                                return;
+                                            }
+                                        }
 
-
-
-
-
-
+                                        gestionSharedPreferences.putString("cedulaPago",""+editTextCedulaPago.getText().toString());
+                                        botonConfirmarPago.setVisibility(View.GONE);
+                                        botonConfirmarPagoDisable.setVisibility(View.VISIBLE);
+                                        WebServiceValidarPago(editTextCedulaPago.getText().toString(),
+                                                TextUtils.isEmpty(gestionSharedPreferences.getString("clave"))?editTextClavePago.getText().toString():gestionSharedPreferences.getString("clave"),numTransaccion);
+                                    }
+                                }
+                                @Override
+                                public void onAuthenticationCancel()
+                                {
+                                    //Toast.makeText(Login.this, "Fail", Toast.LENGTH_SHORT).show();
+                                }
+                            }).show();
+                }
+            }
+        });
     }
 
     //TextWatcher

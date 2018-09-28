@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:id="@+id/coordinatorLayoutPago"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -69,19 +69,19 @@
 
             <com.ingeniapps.dicmax.Text.FontStylerView
                 android:id="@+id/textViewOlvidoClave"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="30dp"
-                app:fontName="AvenirLTStd-Black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_alignParentBottom="true"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
                 android:paddingBottom="3dp"
+                android:paddingTop="0dp"
                 android:text="Empresa"
-                android:paddingTop="30dp"
                 android:textColor="@color/colorAzulDicmax"
                 android:textSize="19sp"
+                app:fontName="AvenirLTStd-Black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -198,7 +198,7 @@
 
             <android.support.v4.widget.Space
                 android:layout_width="match_parent"
-                android:layout_height="20dp" />
+                android:layout_height="5dp" />
 
 
 
@@ -213,19 +213,20 @@
                 android:textColorHint="@color/colorEditTextGris">
 
                 <EditText
-                    android:backgroundTint="@color/colorEditTextGris"
-                    android:shadowColor="@color/colorEditTextGris"
                     android:id="@+id/editTextCedulaPago"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:hint="Cédula"
-                    android:inputType="number"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:textSize="18sp"
+                    android:backgroundTint="@color/colorEditTextGris"
+                    android:hint="Cédula"
+                    android:text="sdsd"
+                    android:inputType="number"
+                    android:shadowColor="@color/colorEditTextGris"
                     android:textColor="@color/colorEditTextGris"
                     android:textColorHint="@color/colorEditTextGris"
-                    android:theme="@style/EditTextFondoBlanco"/>
+                    android:textSize="18sp"
+                    android:theme="@style/EditTextFondoBlanco" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -293,8 +294,53 @@
                 android:textColor="@color/colorBlanco" />
 
 
+            <LinearLayout
+                android:id="@+id/llHuellaPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:visibility="gone"
+                android:paddingTop="30dp"
+                android:paddingRight="20dp"
+                android:layout_weight="0">
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_finger_screen_blank"
+                    android:id="@+id/imageFinderPago"
+                    android:layout_marginBottom="0dp"/>
+
+                <com.ingeniapps.dicmax.Text.FontStylerView
+                    android:id="@+id/textVyyyiewOlvidoClave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="15dp"
+                    android:gravity="center"
+                    android:text="Pagar con huella"
+                    android:textColor="@color/colorGrisTextCollpser"
+                    android:textSize="16dp"
+                    app:fontName="AvenirLTStd-Light"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgLogo"
+                    app:layout_constraintVertical_bias="0.904" />
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+
 
     </LinearLayout>
 

@@ -124,10 +124,10 @@ public class NotificationUtils
                 .setContentIntent(resultPendingIntent)
                 .setSound(alarmSound)
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
-                .setLights(Color.RED, 1000, 1000)
+                .setLights(Color.BLUE, 1000, 1000)
                 .setStyle(inboxStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
-                .setSmallIcon(R.drawable.ic_push_small)
+                .setSmallIcon(R.drawable.ic_push_kupi)
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
                 .setContentText(message)
                 .build();
@@ -153,7 +153,7 @@ public class NotificationUtils
                 .setSound(alarmSound)
                 .setStyle(bigPictureStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
-                .setSmallIcon(R.drawable.ic_push_small)
+                .setSmallIcon(R.drawable.ic_push_kupi)
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
                 .setContentText(message)
                 .build();

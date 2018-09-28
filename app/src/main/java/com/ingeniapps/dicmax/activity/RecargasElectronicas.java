@@ -111,7 +111,7 @@ public class RecargasElectronicas extends AppCompatActivity
         input_layout_valor_recarga.setTypeface(copperplateGothicLight);
         input_layout_cedula_recarga=(TextInputLayout) findViewById(R.id.input_layout_cedula_recarga);
         input_layout_cedula_recarga.setTypeface(copperplateGothicLight);
-        input_layout_clave_recarga=(TextInputLayout) findViewById(R.id.input_layout_clave_recarga);
+        input_layout_clave_recarga= findViewById(R.id.input_layout_clave_recarga);
         input_layout_clave_recarga.setTypeface(copperplateGothicLight);
 
         editTextOperador=(EditText)findViewById(R.id.editTextOperador);
@@ -290,7 +290,7 @@ public class RecargasElectronicas extends AppCompatActivity
                                 {
                                     buttonRecargarEnable.setVisibility(View.GONE);
                                     buttonRecargarDisable.setVisibility(View.VISIBLE);
-                                    linearLoadingRecarga.setVisibility(View.VISIBLE);
+                                    linearLoadingRecarga.setVisibility(View.INVISIBLE);
 
                                     editTextOperador.setEnabled(false);
                                     editTextTelefono.setEnabled(false);
@@ -338,6 +338,15 @@ public class RecargasElectronicas extends AppCompatActivity
                             if (!((Activity) context).isFinishing())
                             {
                                 alertarErrores=new AlertasErrores(""+e.getMessage().toString(), scrollRecargas,RecargasElectronicas.this);
+
+                                buttonRecargarEnable.setVisibility(View.VISIBLE);
+                                buttonRecargarDisable.setVisibility(View.GONE);
+                                linearLoadingRecarga.setVisibility(View.INVISIBLE);
+                                editTextOperador.setEnabled(true);
+                                editTextTelefono.setEnabled(true);
+                                editTextValorRecarga.setEnabled(true);
+                                editTextCedulaRecarga.setEnabled(true);
+                                editTextValorClaveRecarga.setEnabled(true);
                             }
                             e.printStackTrace();
                         }
@@ -346,28 +355,104 @@ public class RecargasElectronicas extends AppCompatActivity
                 new Response.ErrorListener()
                 {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(VolleyError error)
+                    {
 
-                        if (error instanceof TimeoutError) {
-                            if (!((Activity) context).isFinishing()) {
-                                alertarErrores=new AlertasErrores(""+error.getMessage().toString(), linearLoadingRecarga,RecargasElectronicas.this);
+                        if (error instanceof TimeoutError)
+                        {
+                            if (!((Activity) context).isFinishing())
+                            {
+                                alertarErrores=new AlertasErrores("Tiempo espera conexión agotado, intenta de nuevo.", linearLoadingRecarga,RecargasElectronicas.this);
+                                buttonRecargarEnable.setVisibility(View.VISIBLE);
+                                buttonRecargarDisable.setVisibility(View.GONE);
+                                linearLoadingRecarga.setVisibility(View.INVISIBLE);
+                                editTextOperador.setEnabled(true);
+                                editTextTelefono.setEnabled(true);
+                                editTextValorRecarga.setEnabled(true);
+                                editTextCedulaRecarga.setEnabled(true);
+                                editTextValorClaveRecarga.setEnabled(true);
 
                             }
-                        } else if (error instanceof NoConnectionError) {
-                            if (!((Activity) context).isFinishing()) {
-                                alertarErrores=new AlertasErrores(""+error.getMessage().toString(), linearLoadingRecarga,RecargasElectronicas.this);                            }
-                        } else if (error instanceof AuthFailureError) {
-                            if (!((Activity) context).isFinishing()) {
-                                alertarErrores=new AlertasErrores(""+error.getMessage().toString(), linearLoadingRecarga,RecargasElectronicas.this);                            }
-                        } else if (error instanceof ServerError) {
-                            if (!((Activity) context).isFinishing()) {
-                                alertarErrores=new AlertasErrores(""+error.getMessage().toString(), linearLoadingRecarga,RecargasElectronicas.this);                            }
-                        } else if (error instanceof NetworkError) {
-                            if (!((Activity) context).isFinishing()) {
-                                alertarErrores=new AlertasErrores(""+error.getMessage().toString(), linearLoadingRecarga,RecargasElectronicas.this);                            }
-                        } else if (error instanceof ParseError) {
-                            if (!((Activity) context).isFinishing()) {
-                                alertarErrores=new AlertasErrores(""+error.getMessage().toString(), linearLoadingRecarga,RecargasElectronicas.this);                            }
+                        }
+                        else
+                        if (error instanceof NoConnectionError)
+                        {
+                            if (!((Activity) context).isFinishing())
+                            {
+                                alertarErrores=new AlertasErrores("Error conexión datos/internet, intenta de nuevo.", linearLoadingRecarga,RecargasElectronicas.this);
+                                buttonRecargarEnable.setVisibility(View.VISIBLE);
+                                buttonRecargarDisable.setVisibility(View.GONE);
+                                linearLoadingRecarga.setVisibility(View.INVISIBLE);
+                                editTextOperador.setEnabled(true);
+                                editTextTelefono.setEnabled(true);
+                                editTextValorRecarga.setEnabled(true);
+                                editTextCedulaRecarga.setEnabled(true);
+                                editTextValorClaveRecarga.setEnabled(true);
+                            }
+                        }
+                        else
+                        if (error instanceof AuthFailureError)
+                        {
+                            if (!((Activity) context).isFinishing())
+                            {
+                                alertarErrores=new AlertasErrores("Error autorización de petición, intenta de nuevo o contactanos.", linearLoadingRecarga,RecargasElectronicas.this);
+                                buttonRecargarEnable.setVisibility(View.VISIBLE);
+                                buttonRecargarDisable.setVisibility(View.GONE);
+                                linearLoadingRecarga.setVisibility(View.INVISIBLE);
+                                editTextOperador.setEnabled(true);
+                                editTextTelefono.setEnabled(true);
+                                editTextValorRecarga.setEnabled(true);
+                                editTextCedulaRecarga.setEnabled(true);
+                                editTextValorClaveRecarga.setEnabled(true);
+                            }
+                        }
+                        else
+                        if (error instanceof ServerError)
+                        {
+                            if (!((Activity) context).isFinishing())
+                            {
+                                alertarErrores=new AlertasErrores("Error respuesta servidor, intenta de nuevo o contactanos.", linearLoadingRecarga,RecargasElectronicas.this);
+                                buttonRecargarEnable.setVisibility(View.VISIBLE);
+                                buttonRecargarDisable.setVisibility(View.GONE);
+                                linearLoadingRecarga.setVisibility(View.INVISIBLE);
+                                editTextOperador.setEnabled(true);
+                                editTextTelefono.setEnabled(true);
+                                editTextValorRecarga.setEnabled(true);
+                                editTextCedulaRecarga.setEnabled(true);
+                                editTextValorClaveRecarga.setEnabled(true);
+                            }
+                        }
+                        else
+                        if (error instanceof NetworkError)
+                        {
+                            if (!((Activity) context).isFinishing())
+                            {
+                                alertarErrores=new AlertasErrores("Error red de conexión, intenta de nuevo o contactanos.", linearLoadingRecarga,RecargasElectronicas.this);
+                                buttonRecargarEnable.setVisibility(View.VISIBLE);
+                                buttonRecargarDisable.setVisibility(View.GONE);
+                                linearLoadingRecarga.setVisibility(View.INVISIBLE);
+                                editTextOperador.setEnabled(true);
+                                editTextTelefono.setEnabled(true);
+                                editTextValorRecarga.setEnabled(true);
+                                editTextCedulaRecarga.setEnabled(true);
+                                editTextValorClaveRecarga.setEnabled(true);
+                            }
+                        }
+                        else
+                        if (error instanceof ParseError)
+                        {
+                            if (!((Activity) context).isFinishing())
+                            {
+                                alertarErrores=new AlertasErrores("Error codificación respuesta servidor, intenta de nuevo o contactanos.", linearLoadingRecarga,RecargasElectronicas.this);
+                                buttonRecargarEnable.setVisibility(View.VISIBLE);
+                                buttonRecargarDisable.setVisibility(View.GONE);
+                                linearLoadingRecarga.setVisibility(View.INVISIBLE);
+                                editTextOperador.setEnabled(true);
+                                editTextTelefono.setEnabled(true);
+                                editTextValorRecarga.setEnabled(true);
+                                editTextCedulaRecarga.setEnabled(true);
+                                editTextValorClaveRecarga.setEnabled(true);
+                            }
                         }
                     }
                 })

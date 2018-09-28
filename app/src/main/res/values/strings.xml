@@ -12,5 +12,28 @@
     <string name="permission_camera_rationale">Para escanear, aprueba permiso de acceso a tu cámara.</string>
     <string name="no_camera_permission">No se puede iniciar el escáner, debes aprobar los permisos de tu cámara.</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_detalle_push">DetallePush</string>
+
+    <string name="fingerprint_state_scanning">Sensor Huella</string>
+    <string name="fingerprint_state_success">Huella validada con éxito</string>
+    <string name="fingerprint_state_failure">No se reconoce la huella.\nIntenta de nuevo.</string>
+    <string name="fingerprint_cancel">Cancelar</string>
+    <string name="fingerprint_use_password">Usar Password</string>
+    <string name="fingerprint_icon_description">Fingerprint icon</string>
+
+    <string name="password_confirm">Confirmar</string>
+    <string name="password_cancel">Cancelar</string>
+    <string name="password_incorrect">Incorrect Password</string>
+
+    <string name="fingerprint_title">Lector de Huella</string>
+    <string name="fingerprint_message">Ubique su dedo en el sensor de huella</string>
+
+    <string name="password_title">Password</string>
+    <string name="password_message">You need to enter your password because a new fingerprint was added</string>
+
+    <string name="activity_menu_simple_dialog">Dialog</string>
+    <string name="activity_menu_secure_dialog">Secure Dialog</string>
+    <string name="activity_menu_simple_view">View</string>
+    <string name="activity_menu_secure_view">Secure View</string>
 
 </resources>

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.ingeniapps.dicmax.activity.DetallePush;
 import com.ingeniapps.dicmax.activity.Inicio;
 import com.ingeniapps.dicmax.app.Config;
 import com.ingeniapps.dicmax.sharedPreferences.gestionSharedPreferences;
@@ -97,9 +98,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
             //JSONObject data = json.getJSONObject("data");
             String title = json.getString("title");
             String message = json.getString("message");
-            //String imageUrl = json.getString("image");
+            String imageUrl = json.getString("image");
             String timestamp = json.getString("timestamp");
             String keyMessage = json.getString("keyMessage");
+            String fecTimeStamp = json.getString("fecTimeStamp");
             boolean isBackground = json.getBoolean("is_background");
 
             //String payload = json.getString("data");
@@ -118,62 +120,55 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
             Log.e("ESC", "message: " + message);
             Log.e("ESC", "isBackground: " + isBackground);
             //Log.e("ESC", "payload: " + evento.toString());
-            //Log.e("ESC", "imageUrl: " + imageUrl);
+            Log.e("ESC", "imageUrl: " + imageUrl);
             Log.e("ESC", "timestamp: " + timestamp);
             Log.e("ESC", "keyMessage: " + keyMessage);
+            Log.e("ESC", "fecTimeStamp: " + fecTimeStamp);
 
             if (!isBackground)
             {
                 if (!NotificationUtils.isAppIsInBackground(getApplicationContext()))//IS FRONT APP
                 {
-                    if (keyMessage.equals("pushOk"))//PUSH NUEVA NOTICIA
+                    if (keyMessage.equals("pushKupi"))//PUSH NUEVA NOTICIA
                     {
-                        Intent intent = new Intent(Config.PUSH_NOTIFICATION);
+                        /*Intent intent = new Intent(Config.PUSH_NOTIFICATION);
                         intent.putExtra("message", message);
                         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
                         Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                        // play notification sound
                         NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-                        notificationUtils.playNotificationSound();
+                        notificationUtils.playNotificationSound();*/
                     }
-
-
-
                 }
 
                 else
 
                 if (NotificationUtils.isAppIsInBackground(getApplicationContext()))//IS BACKGROUND APP
                 {
-                    if (keyMessage.equals("pushDicmax"))
+                    if (keyMessage.equals("pushKupi"))
                     {
-
-                        Log.i("jovo",""+message);
-
-
-                        Intent resultIntent = new Intent(MyFirebaseMessagingService.this, Inicio.class);
-
+                        Intent resultIntent = new Intent(MyFirebaseMessagingService.this, DetallePush.class);
+                        Intent i = new Intent("finish_activity");
+                        sendBroadcast(i);
                         LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
-                        //resultIntent.putExtra("indicaPush", "pushNominacion");
-                        //resultIntent.putExtra("message", message);
-                        //resultIntent.putExtra("notificarUsoTicket", notificarUsoTicket);
-                        //resultIntent.putExtra("ticket", ticket.toString());*//*
+                        resultIntent.putExtra("isNotifyPush", true);
+                        resultIntent.putExtra("titulo", title);
+                        resultIntent.putExtra("mensaje", message);
+                        resultIntent.putExtra("urlImagen", imageUrl);
+                        resultIntent.putExtra("fecha", fecTimeStamp);
+                        //resultIntent.putExtra("codPush", cod);
                         PendingIntent pendingNot = PendingIntent.getActivity(getApplicationContext(),0,
                                 resultIntent,0);
-
-                        showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
-
-                        // check for image attachment
-                        /*if (TextUtils.isEmpty(imageUrl))
+                        if (TextUtils.isEmpty(imageUrl))
                         {
+                            Log.e("Kupi", "Kupi" + "SIN IMAGEN");
                             showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
                         }
-
                         else
                         {
                             // image is present, show notification with image
+                            Log.e("Kupi", "Kupi" + "CON IMAGEN");
                             showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
-                        }*/
+                        }
 
                     }
 

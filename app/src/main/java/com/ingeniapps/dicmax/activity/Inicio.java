@@ -1,24 +1,36 @@
 package com.ingeniapps.dicmax.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.KeyguardManager;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.Settings;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyPermanentlyInvalidatedException;
+import android.security.keystore.KeyProperties;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
@@ -55,6 +67,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.ingeniapps.dicmax.R;
+import com.ingeniapps.dicmax.app.Config;
 import com.ingeniapps.dicmax.beans.Empresa;
 import com.ingeniapps.dicmax.fragment.Categorias;
 import com.ingeniapps.dicmax.fragment.Compromisos;
@@ -77,10 +90,24 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.ingeniapps.dicmax.sharedPreferences.gestionSharedPreferences;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
 
 public class Inicio extends AppCompatActivity
@@ -93,13 +120,25 @@ public class Inicio extends AppCompatActivity
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private String tokenFCM;
     private vars vars;
-    private String idDevice;
     public static final String BARCODE_KEY = "BARCODE";
     private Barcode barcodeResult;
     private ProgressDialog progressDialog;
     gestionSharedPreferences gestionSharedPreferences;
+    gestionSharedPreferences gestionSharedHuella;
     private Boolean guardarSesion;
     private String idCiudad;
+
+    private String indicaPush;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private BroadcastReceiver broadcast_reciever;
+
+    private KeyStore keyStore;
+    // Variable used for storing the key in the Android Keystore container
+    private static final String KEY_NAME = "androidHive";
+    private Cipher cipher;
+    private TextView textView;
+    private String numDocumento,clave;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -111,206 +150,268 @@ public class Inicio extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        gestionSharedPreferences=new gestionSharedPreferences(this);
-        guardarSesion=gestionSharedPreferences.getBoolean("GuardarSesion");
+        // Initializing both Android Keyguard Manager and Fingerprint Manager
+        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        context=Inicio.this;
-        vars=new vars();
-
-        BarcodeDetector detector =
-                new BarcodeDetector.Builder(getApplicationContext())
-                        .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
-                        .build();
-
-        idDevice= Settings.Secure.getString(this.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-
-        if(savedInstanceState != null)
+      /*  //VALIDACION DE HUELLA
+        // Check whether the device has a Fingerprint sensor.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
-            Barcode restoredBarcode = savedInstanceState.getParcelable(BARCODE_KEY);
-            if(restoredBarcode != null)
+            if (fingerprintManager.isHardwareDetected())
             {
-                //result.setText(restoredBarcode.rawValue);
-                barcodeResult = restoredBarcode;
-            }
-        }
-
-        if (savedInstanceState == null)
-        {
-            Bundle extras = getIntent().getExtras();
-            if (extras == null)
-            {
-                idCiudad = null;
-            }
-            else
-            {
-                idCiudad = extras.getString("codCiudad");
-            }
-        }
-
-        //Toast.makeText(Inicio.this,"codCiudad: "+idCiudad,Toast.LENGTH_LONG).show();
-
-        toolbar.setNavigationIcon(R.drawable.ic_signout);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-
-                if (guardarSesion==false)
-                {
-                    gestionSharedPreferences.clear();
-                    Intent i=new Intent(Inicio.this, Login.class);
-                    startActivity(i);
-                    finish();
-                }
-                else
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(new android.support.v7.view.ContextThemeWrapper(Inicio.this, R.style.AlertDialogTheme));
-                    builder
-                            .setTitle("Kupi")
-                            .setMessage("¿Deseas cerrar sesión?")
-                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
+                Toast.makeText(Inicio.this, "Sensor huella detectado.", Toast.LENGTH_SHORT).show();
+                // Checks whether fingerprint permission is set on manifest
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(context, "Fingerprint authentication permission not enabled", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Check whether at least one fingerprint is registered
+                    if (!fingerprintManager.hasEnrolledFingerprints()) {
+                        Toast.makeText(context, "Register at least one fingerprint in Settings", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Checks whether lock screen security is enabled or not
+                        if (!keyguardManager.isKeyguardSecure()) {
+                            Toast.makeText(context, "Lock screen security not enabled in Settings", Toast.LENGTH_SHORT).show();
+                        } else {
+                            generateKey();
+                            if (cipherInit())
                             {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id)
-                                {
-                                    gestionSharedPreferences.clear();
-                                    Intent i=new Intent(Inicio.this, Login.class);
-                                    startActivity(i);
-                                    finish();
-
-                                }
-                            }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id)
-                        {
-
+                                FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
+                                FingerprintHandler helper = new FingerprintHandler(this);
+                                helper.startAuth(fingerprintManager, cryptoObject);
+                            }
                         }
-                    }).show();
+                    }
                 }
-            }
-        });
+            }*/
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
 
-        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+                gestionSharedPreferences = new gestionSharedPreferences(this);
+                gestionSharedHuella = new gestionSharedPreferences(this);
+                guardarSesion = gestionSharedPreferences.getBoolean("GuardarSesion");
 
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, new Home());
-        fragmentTransaction.commit();
+                AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener
-                (new BottomNavigationView.OnNavigationItemSelectedListener()
-                {
+                context = Inicio.this;
+                vars = new vars();
+
+                broadcast_reciever = new BroadcastReceiver() {
+
                     @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item)
-                    {
-                        Fragment fragment = null;
-                        Class fragmentClass;
-
-                        switch (item.getItemId())
-                        {
-                            case R.id.action_inicio:
-                                fragmentClass = Home.class;
-                                break;
-                           case R.id.action_comercios:
-                                fragmentClass = Categorias.class;
-                                break;
-                            case R.id.action_contacto:
-                                if (guardarSesion==false)
-                                {
-                                    cargarLogin();
-                                }
-                                else
-                                {
-                                    fragmentClass = Contacto.class;
-                                    break;
-                                }
-                            case R.id.action_historial:
-                                if (guardarSesion==false)
-                                {
-                                    cargarLogin();
-                                }
-                                else
-                                {
-                                    fragmentClass = Pagos.class;
-                                    break;
-                                }
-                            case R.id.action_cuenta:
-                                if (guardarSesion==false)
-                                {
-                                    cargarLogin();
-                                }
-                                else
-                                {
-                                    fragmentClass = Cuenta.class;
-                                    break;
-                                }
-                            default:
-                                fragmentClass = Home.class;
+                    public void onReceive(Context arg0, Intent intent) {
+                        String action = intent.getAction();
+                        if (action.equals("finish_activity")) {
+                            finish();
+                            // DO WHATEVER YOU WANT.
                         }
+                    }
+                };
+                registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
 
-                        try
-                        {
-                            fragment = (Fragment) fragmentClass.newInstance();
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
+                BarcodeDetector detector =
+                        new BarcodeDetector.Builder(getApplicationContext())
+                                .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
+                                .build();
 
-                        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.frame_layout, fragment);
-                        fragmentTransaction.commit();
-                        return true;
+                if (savedInstanceState != null) {
+                    Barcode restoredBarcode = savedInstanceState.getParcelable(BARCODE_KEY);
+                    if (restoredBarcode != null) {
+                        //result.setText(restoredBarcode.rawValue);
+                        barcodeResult = restoredBarcode;
+                    }
+                }
+
+                if (savedInstanceState == null) {
+                    Bundle extras = getIntent().getExtras();
+                    if (extras == null) {
+                        idCiudad = null;
+                        indicaPush = null;
+                        numDocumento = null;
+                        clave = null;
+                    } else {
+                        idCiudad = extras.getString("codCiudad");
+                        indicaPush = extras.getString("indicaPush");
+                        numDocumento = extras.getString("numDocumento");
+                        clave = extras.getString("claveUsuario");
+                    }
+                }
+
+                gestionSharedPreferences.putString("clave",""+clave);
+
+                //Toast.makeText(Inicio.this,"codCiudad: "+idCiudad,Toast.LENGTH_LONG).show();
+
+
+
+
+
+                toolbar.setNavigationIcon(R.drawable.ic_signout);
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (guardarSesion == false) {
+                            gestionSharedPreferences.clear();
+                            Intent i = new Intent(Inicio.this, Login.class);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(new android.support.v7.view.ContextThemeWrapper(Inicio.this, R.style.AlertDialogTheme));
+                            builder
+                                    .setTitle("Kupi")
+                                    .setMessage("¿Deseas cerrar sesión?")
+                                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            cerrarSesion();
+                                        }
+                                    }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                }
+                            }).show();
+                        }
                     }
                 });
 
-        try
-        {
-            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        }
-        catch (PackageManager.NameNotFoundException e)
-        {
-            e.printStackTrace();
-        }
+                BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                        findViewById(R.id.bottom_navigation);
 
-        if(checkPlayServices())
-        {
-            if(!TextUtils.isEmpty(FirebaseInstanceId.getInstance().getToken()))
+                BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, new Home());
+                fragmentTransaction.commit();
+
+                bottomNavigationView.setOnNavigationItemSelectedListener
+                        (new BottomNavigationView.OnNavigationItemSelectedListener() {
+                            @Override
+                            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                                Fragment fragment = null;
+                                Class fragmentClass;
+
+                                switch (item.getItemId()) {
+                                    case R.id.action_inicio:
+                                        fragmentClass = Home.class;
+                                        break;
+                                    case R.id.action_comercios:
+                                        fragmentClass = Categorias.class;
+                                        break;
+                                    case R.id.action_contacto:
+                                        if (guardarSesion == false) {
+                                            cargarLogin();
+                                        } else {
+                                            fragmentClass = Contacto.class;
+                                            break;
+                                        }
+                                    case R.id.action_historial:
+                                        if (guardarSesion == false) {
+                                            cargarLogin();
+                                        } else {
+                                            fragmentClass = Pagos.class;
+                                            break;
+                                        }
+                                    case R.id.action_cuenta:
+                                        if (guardarSesion == false) {
+                                            cargarLogin();
+                                        } else {
+                                            fragmentClass = Cuenta.class;
+                                            break;
+                                        }
+                                    default:
+                                        fragmentClass = Home.class;
+                                }
+
+                                try {
+                                    fragment = (Fragment) fragmentClass.newInstance();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.frame_layout, fragment);
+                                fragmentTransaction.commit();
+                                return true;
+                            }
+                        });
+
+
+            /*mRegistrationBroadcastReceiver = new BroadcastReceiver()
             {
-                tokenFCM=FirebaseInstanceId.getInstance().getToken();
-                Log.i("tokenFCM",""+tokenFCM);
-            }
-        }
-        else
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Inicio.this,R.style.AlertDialogTheme));
-            builder
-                    .setTitle("Google Play Services")
-                    .setMessage("Se ha encontrado un error con los servicios de Google Play, actualizalo y vuelve a ingresar.")
-                    .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener()
+                @Override
+                public void onReceive(Context context, Intent intent)
+                {
+                    // checking for type intent filter
+                    if (intent.getAction().equals(Config.PUSH_NOTIFICATION))
                     {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id)
+                        if(!(Inicio.this).isFinishing())
                         {
-                            finish();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Inicio.this, R.style.AlertDialogTheme));
+                            builder
+                                    .setTitle("Kupi")
+                                    .setMessage("Hola! Tienes un nuevo mensaje justo ahora!")
+                                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int id)
+                                        {
+                                            *//*bottomNavigationView.setSelectedItemId(R.id.action_historial);
+                                            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                                            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                            fragmentTransaction.replace(R.id.frame_layout, new HistorialNominaciones());
+                                            fragmentTransaction.commit();*//*
+                                        }
+                                    }).setCancelable(false).show().getButton(DialogInterface.BUTTON_POSITIVE).
+                                    setTextColor(getResources().getColor(R.color.colorPrimary));
                         }
-                    }).setCancelable(false).show().getButton(DialogInterface.BUTTON_POSITIVE).
-                    setTextColor(getResources().getColor(R.color.colorPrimary));
-        }
+                    }
+                }
+            };*/
+
+
+                try {
+                    currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                    gestionSharedPreferences.putString("versionApp", currentVersion);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                if (checkPlayServices()) {
+                    if (!TextUtils.isEmpty(FirebaseInstanceId.getInstance().getToken())) {
+                        tokenFCM = FirebaseInstanceId.getInstance().getToken();
+                        Log.i("tokenFCM", "" + tokenFCM);
+                    }
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(Inicio.this, R.style.AlertDialogTheme));
+                    builder
+                            .setTitle("Google Play Services")
+                            .setMessage("Se ha encontrado un error con los servicios de Google Play, actualizalo y vuelve a ingresar.")
+                            .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    finish();
+                                }
+                            }).setCancelable(false).show().getButton(DialogInterface.BUTTON_POSITIVE).
+                            setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
     }
 
-    private void updateTokenFCMToServer()
+    @Override
+    protected void onPause()
     {
-        String _urlWebServiceUpdateToken = vars.ipServer.concat("/ws/updateToken");
+        super.onPause();
+        Log.d("Principal", "onPause");
+        gestionSharedPreferences.putBoolean("isActivePrincipal",false);
+    }
+
+    private boolean isHuella;
+
+    private void cerrarSesion()
+    {
+        String _urlWebServiceUpdateToken = vars.ipServer.concat("/ws/closeSession");
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, _urlWebServiceUpdateToken, null,
                 new Response.Listener<JSONObject>()
@@ -320,22 +421,30 @@ public class Inicio extends AppCompatActivity
                     {
                         try
                         {
-                            Boolean status = response.getBoolean("status");
-                            String message = response.getString("message");
-
+                            boolean status=response.getBoolean("status");
                             if(status)
                             {
-                                Log.i("dicmax",""+message);
-                            }
-                            else
-                            {
-                                Log.i("dicmax",""+message);
+                                isHuella= gestionSharedPreferences.getBoolean("isHuella");
+                                gestionSharedPreferences.clear();
+                                //CONSERVAMOS LOS DATOS DE INGRESO PARA EL CASO DE LA HUELLA
+                                //Toast.makeText(context, "isHuella Cerrar Sesion: "+isHuella, Toast.LENGTH_SHORT).show();
+                                if(isHuella)
+                                {
+                                    gestionSharedPreferences.putBoolean("isHuella",true);
+                                    gestionSharedPreferences.putString("numDocumento",""+numDocumento);
+                                    gestionSharedPreferences.putString("clave",""+clave);
+                                    //Toast.makeText(context, "Clave Inicio: "+clave, Toast.LENGTH_SHORT).show();
+                                }
+                                Intent i=new Intent(Inicio.this, Login.class);
+                                startActivity(i);
+                                finish();
                             }
                         }
                         catch (JSONException e)
                         {
                             e.printStackTrace();
                         }
+
                     }
                 },
                 new Response.ErrorListener()
@@ -354,8 +463,45 @@ public class Inicio extends AppCompatActivity
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json; charset=utf-8");
                 headers.put("WWW-Authenticate", "xBasic realm=".concat(""));
-                headers.put("ideCelular",""+idDevice);
-                headers.put("fcmToken",""+FirebaseInstanceId.getInstance().getToken());
+                headers.put("codUsuario",""+gestionSharedPreferences.getString("codUsuario"));
+                return headers;
+            }
+        };
+        ControllerSingleton.getInstance().addToReqQueue(jsonObjReq, "tokenFCM");
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(20000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    private void updateTokenFCMToServer()
+    {
+        String _urlWebServiceUpdateToken = vars.ipServer.concat("/ws/updateTokenFCM");
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, _urlWebServiceUpdateToken, null,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        //Toast.makeText(getActivity(), "Token FCM: " + "error"+error.getMessage(), Toast.LENGTH_LONG).show();
+
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("WWW-Authenticate", "xBasic realm=".concat(""));
+                headers.put("numDocumento",""+gestionSharedPreferences.getString("numDocumento"));
+                headers.put("tokenFCM",""+tokenFCM);
+                headers.put("versionApp", currentVersion);
                 headers.put("codSistema", "1");
                 return headers;
             }
@@ -418,6 +564,7 @@ public class Inicio extends AppCompatActivity
     public void onDestroy()
     {
         super.onDestroy();
+        unregisterReceiver(broadcast_reciever);
         ControllerSingleton.getInstance().cancelPendingReq("tokenFCM");
     }
 
@@ -429,6 +576,7 @@ public class Inicio extends AppCompatActivity
     {
         super.onResume();
         updateTokenFCMToServer();
+        gestionSharedPreferences.putBoolean("isActivePrincipal",true);
 
         //SI LA PERSONA ACTUALIZA EL APP PERO NO SE DESLOGUEA, LE DECIMOS QUE ESCOJA SU CIUDAD DE USO
         if(TextUtils.isEmpty(gestionSharedPreferences.getString("codCiudad")) || TextUtils.isEmpty(gestionSharedPreferences.getString("nomCiudad")))
@@ -452,20 +600,7 @@ public class Inicio extends AppCompatActivity
                             }
                         }).setCancelable(false).show();
             }
-
-
         }
-
-
-
-        //Toast.makeText(Inicio.this,"codCiudad: "+gestionSharedPreferences.getString("codCiudad"),Toast.LENGTH_LONG).show();
-        //Toast.makeText(Inicio.this,"nomCiudad: "+gestionSharedPreferences.getString("nomCiudad"),Toast.LENGTH_LONG).show();
-
-       /* if(!notificaUpdate)
-        {
-            new CheckUpdateAppPlayStore().execute();
-            notificaUpdate=true;
-        }*/
     }
 
     private void startScan()
@@ -593,7 +728,6 @@ public class Inicio extends AppCompatActivity
                                     }
                                 }
 
-
                                 JSONObject jsonObject=response.getJSONObject("pay");
                                 Intent i=new Intent(Inicio.this, Pago.class);
                                 i.putExtra("nomEmpresa",""+jsonObject.getString("nomEmpresa"));
@@ -601,6 +735,10 @@ public class Inicio extends AppCompatActivity
                                 i.putExtra("valPago",""+jsonObject.getString("valTransaccion"));
                                 i.putExtra("codEmpresa",""+jsonObject.getString("codEmpresa"));
                                 i.putExtra("numTransaccion",""+jsonObject.getString("numTransaccion"));
+                                //VALIDAMOS SI HAY HUELLA Y ENVIAMOS LOS ENROLES
+                                i.putExtra("isHuella",gestionSharedPreferences.getBoolean("isHuella"));
+                                i.putExtra("numDocumento",""+numDocumento);
+                                i.putExtra("clave",""+clave);
                                 startActivity(i);
                             }
                             else
